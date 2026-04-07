@@ -668,14 +668,14 @@ footer{
   <div class="footer-inner">
     <div class="footer-logo">Status<span>Vault</span></div>
     <div class="footer-links">
-      <a href="mailto:hello@statusvault.app">hello@statusvault.app</a>
+      <a href="/cdn-cgi/l/email-protection#adc5c8c1c1c2edded9ccd9d8dedbccd8c1d983ccdddd"><span class="__cf_email__" data-cfemail="acc4c9c0c0c3ecdfd8cdd8d9dfdacdd9c0d882cddcdc">[email&#160;protected]</span></a>
       <a href="#">Privacy Policy</a>
     </div>
     <p class="footer-note">© 2026 StatusVault · Android · Launching September 2026 · Your memories. Saved before they disappear.</p>
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Scroll reveal
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible'); obs.unobserve(e.target);} });
@@ -699,26 +699,56 @@ function animateCounter(){
 const cobs = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){animateCounter();cobs.unobserve(e.target);}});},{threshold:.5});
 const cel=document.querySelector('.counter'); if(cel)cobs.observe(cel);
 
+// Brevo integration
+async function subscribeToBrevo(email) {
+  const response = await fetch('https://api.brevo.com/v3/contacts', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'api-key': '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'
+    },
+    body: JSON.stringify({
+      email: email,
+      listIds: [3],
+      updateEnabled: true
+    })
+  });
+  if (!response.ok && response.status !== 204) {
+    const err = await response.json();
+    throw new Error(err.message || 'Errore');
+  }
+  return true;
+}
+
 // Forms
-function handleSubmit(){
+async function handleSubmit(){
   const v=document.getElementById('emailInput').value.trim();
   if(!v||!v.includes('@')){document.getElementById('emailInput').focus();return;}
-  document.getElementById('formContainer').style.display='none';
-  document.getElementById('successMsg').style.display='block';
-  // fetch('https://formspree.io/f/YOUR_ID',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:v})});
+  const btn = document.querySelector('#formContainer .form-btn');
+  btn.textContent = '...'; btn.disabled = true;
+  try {
+    await subscribeToBrevo(v);
+    document.getElementById('formContainer').style.display='none';
+    document.getElementById('successMsg').style.display='block';
+  } catch(e) {
+    btn.textContent = 'Join the waitlist'; btn.disabled = false;
+    alert('Something went wrong. Please try again.');
+  }
 }
-function handleSubmit2(){
+async function handleSubmit2(){
   const v=document.getElementById('emailInput2').value.trim();
   if(!v||!v.includes('@')){document.getElementById('emailInput2').focus();return;}
-  document.getElementById('formContainer2').style.display='none';
-  document.getElementById('successMsg2').style.display='block';
-}
-document.addEventListener('keydown',e=>{
-  if(e.key==='Enter'){
-    if(document.activeElement.id==='emailInput')handleSubmit();
-    if(document.activeElement.id==='emailInput2')handleSubmit2();
+  const btn = document.querySelector('#formContainer2 .form-btn');
+  btn.textContent = '...'; btn.disabled = true;
+  try {
+    await subscribeToBrevo(v);
+    document.getElementById('formContainer2').style.display='none';
+    document.getElementById('successMsg2').style.display='block';
+  } catch(e) {
+    btn.textContent = 'Get early access'; btn.disabled = false;
+    alert('Something went wrong. Please try again.');
   }
-});
+}
 </script>
 </body>
 </html>
