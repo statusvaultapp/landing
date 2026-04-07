@@ -699,19 +699,12 @@ function animateCounter(){
 const cobs = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){animateCounter();cobs.unobserve(e.target);}});},{threshold:.5});
 const cel=document.querySelector('.counter'); if(cel)cobs.observe(cel);
 
-// Brevo integration
+// Brevo integration via Netlify Function (API key sicura sul server)
 async function subscribeToBrevo(email) {
-  const response = await fetch('https://api.brevo.com/v3/contacts', {
+  const response = await fetch('/.netlify/functions/subscribe', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'api-key': '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'
-    },
-    body: JSON.stringify({
-      email: email,
-      listIds: [3],
-      updateEnabled: true
-    })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: email })
   });
   if (!response.ok && response.status !== 204) {
     const err = await response.json();
