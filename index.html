@@ -1,747 +1,957 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>StatusVault — Your memories. Saved before they disappear.</title>
-<meta name="description" content="WhatsApp deletes your statuses after 24 hours. StatusVault saves them automatically — forever. Join the waitlist.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-<style>
-:root {
-  --ink:   #1c1a18;
-  --ink2:  #2e2b27;
-  --cream: #faf8f5;
-  --warm:  #f4f1ec;
-  --border:#e8e3dc;
-  --stone: #9e9489;
-  --stone2:#7a7168;
-  --g:     #1fa855;
-  --g2:    #17913f;
-  --gs:    #e8f5ee;
-  --gm:    #c8e8d4;
-  --white: #ffffff;
-  --off:   #f0ede8;
-}
-
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{font-family:'DM Sans',sans-serif;color:var(--ink);overflow-x:hidden;}
-
-/* ────────────────────────────────────────
-   HERO — dark background
-──────────────────────────────────────── */
-.hero {
-  background: var(--ink);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 24px 80px;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Green radial glow behind headline */
-.hero::before {
-  content:'';
-  position:absolute;
-  width:800px; height:800px;
-  background:radial-gradient(circle, rgba(31,168,85,.15) 0%, transparent 65%);
-  top:50%; left:50%;
-  transform:translate(-50%,-55%);
-  pointer-events:none;
-}
-
-.hero-inner {
-  max-width:680px;
-  width:100%;
-  text-align:center;
-  position:relative;
-  z-index:1;
-}
-
-/* Logo */
-.logo-wrap {
-  display:flex; align-items:center; justify-content:center; gap:12px;
-  margin-bottom:52px;
-  opacity:0; animation:fadeUp .5s ease .1s forwards;
-}
-.logo-icon {
-  width:44px; height:44px;
-  background:var(--g);
-  border-radius:12px;
-  display:flex; align-items:center; justify-content:center;
-}
-.logo-icon svg{width:26px;height:26px;}
-.logo-name {
-  font-family:'Syne',sans-serif;
-  font-weight:800; font-size:22px;
-  color:var(--white); letter-spacing:-.3px;
-}
-
-/* Badge */
-.badge {
-  display:inline-flex; align-items:center; gap:8px;
-  background:rgba(31,168,85,.15);
-  border:1px solid rgba(31,168,85,.35);
-  border-radius:40px; padding:6px 16px;
-  font-size:12px; font-weight:600; color:var(--g);
-  margin-bottom:28px; letter-spacing:.2px;
-  opacity:0; animation:fadeUp .5s ease .2s forwards;
-}
-.badge-dot {
-  width:7px; height:7px; border-radius:50%;
-  background:var(--g);
-  animation:pulse 2s ease-in-out infinite;
-}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.7);}}
-
-/* Headline */
-.headline {
-  font-family:'Playfair Display',serif;
-  font-weight:700;
-  font-size:clamp(38px,7.5vw,66px);
-  line-height:1.08; letter-spacing:-.5px;
-  color:var(--white);
-  margin-bottom:24px;
-  opacity:0; animation:fadeUp .6s ease .3s forwards;
-}
-.headline em{font-style:italic; color:var(--g);}
-
-/* Subline */
-.subline {
-  font-size:clamp(15px,2.5vw,18px);
-  font-weight:300; color:rgba(255,255,255,.6);
-  line-height:1.75; max-width:500px; margin:0 auto 48px;
-  opacity:0; animation:fadeUp .6s ease .4s forwards;
-}
-.subline strong{color:rgba(255,255,255,.9); font-weight:500;}
-
-/* Form */
-.form-wrap {
-  max-width:460px; width:100%; margin:0 auto 12px;
-  opacity:0; animation:fadeUp .6s ease .5s forwards;
-}
-.form-row {
-  display:flex; gap:8px;
-  background:rgba(255,255,255,.07);
-  border:1.5px solid rgba(255,255,255,.15);
-  border-radius:14px;
-  padding:6px 6px 6px 20px;
-  transition:border-color .2s, box-shadow .2s;
-}
-.form-row:focus-within {
-  border-color:var(--g);
-  box-shadow:0 0 0 3px rgba(31,168,85,.18);
-}
-.form-row input {
-  flex:1; border:none; outline:none;
-  background:transparent;
-  font-family:'DM Sans',sans-serif;
-  font-size:15px; font-weight:400;
-  color:var(--white); min-width:0;
-}
-.form-row input::placeholder{color:rgba(255,255,255,.35);}
-.form-btn {
-  background:var(--g); color:#fff;
-  border:none; border-radius:10px;
-  padding:12px 22px;
-  font-family:'Syne',sans-serif;
-  font-weight:700; font-size:13px; letter-spacing:.3px;
-  cursor:pointer; white-space:nowrap; flex-shrink:0;
-  transition:background .2s, transform .1s;
-}
-.form-btn:hover{background:var(--g2);}
-.form-btn:active{transform:scale(.97);}
-.form-note{font-size:12px; color:rgba(255,255,255,.35); font-weight:300;}
-
-.success-msg {
-  display:none;
-  background:rgba(31,168,85,.15);
-  border:1px solid rgba(31,168,85,.3);
-  border-radius:12px; padding:16px 20px;
-  font-size:14px; color:var(--g);
-  font-weight:500; margin-bottom:12px;
-}
-
-/* Scroll hint */
-.scroll-hint {
-  margin-top:64px;
-  display:flex; flex-direction:column; align-items:center; gap:8px;
-  opacity:0; animation:fadeUp .6s ease .8s forwards;
-}
-.scroll-hint span{font-size:10px; color:rgba(255,255,255,.25); letter-spacing:2px; text-transform:uppercase;}
-.scroll-arrow {
-  width:30px; height:30px;
-  border:1.5px solid rgba(255,255,255,.15); border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  animation:bounce 2s ease-in-out infinite;
-}
-@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
-
-/* ────────────────────────────────────────
-   PROBLEM SECTION — cream background
-──────────────────────────────────────── */
-.problem {
-  background:var(--cream);
-  padding:100px 24px;
-}
-.problem-inner{max-width:900px; margin:0 auto;}
-
-.section-label {
-  display:block;
-  font-size:10px; font-weight:700;
-  letter-spacing:3px; text-transform:uppercase;
-  color:var(--stone); margin-bottom:20px;
-}
-
-.problem-grid {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:52px; align-items:start;
-  margin-top:48px;
-}
-
-.problem-left h2 {
-  font-family:'Playfair Display',serif;
-  font-weight:600;
-  font-size:clamp(26px,4vw,38px);
-  line-height:1.2; color:var(--ink);
-  margin-bottom:20px;
-}
-.problem-left h2 em{font-style:italic; color:var(--g);}
-.problem-left p {
-  font-size:15px; font-weight:300;
-  color:var(--stone2); line-height:1.85;
-}
-
-.stats-col{display:flex; flex-direction:column; gap:16px;}
-
-.stat-card {
-  background:#fff;
-  border:1px solid var(--border);
-  border-left:4px solid var(--g);
-  border-radius:14px; padding:22px 24px;
-}
-.stat-num {
-  font-family:'Syne',sans-serif;
-  font-weight:800; font-size:38px;
-  color:var(--ink); line-height:1; margin-bottom:6px;
-}
-.stat-label{font-size:13px; font-weight:300; color:var(--stone2); line-height:1.5;}
-
-/* ────────────────────────────────────────
-   HOW IT WORKS — dark
-──────────────────────────────────────── */
-.how {
-  background:var(--ink2);
-  padding:100px 24px;
-}
-.how-inner{max-width:900px; margin:0 auto;}
-
-.how .section-label{color:rgba(255,255,255,.35);}
-
-.section-title {
-  font-family:'Playfair Display',serif;
-  font-weight:600;
-  font-size:clamp(26px,4vw,38px);
-  line-height:1.2; margin-bottom:12px;
-}
-.how .section-title{color:var(--white);}
-.how .section-sub{color:rgba(255,255,255,.5);}
-
-.section-sub {
-  font-size:15px; font-weight:300;
-  line-height:1.75; max-width:480px; margin-bottom:52px;
-}
-
-.steps-grid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:20px;
-}
-.step-card {
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:18px; padding:28px 24px;
-}
-.step-num {
-  width:36px; height:36px;
-  background:rgba(31,168,85,.2);
-  border:1px solid rgba(31,168,85,.3);
-  border-radius:10px;
-  display:flex; align-items:center; justify-content:center;
-  font-family:'Syne',sans-serif;
-  font-weight:800; font-size:14px; color:var(--g);
-  margin-bottom:16px;
-}
-.step-card h3{font-family:'Syne',sans-serif; font-weight:800; font-size:15px; color:var(--white); margin-bottom:8px;}
-.step-card p{font-size:13px; font-weight:300; color:rgba(255,255,255,.5); line-height:1.75;}
-
-/* ────────────────────────────────────────
-   MEMORY — cream
-──────────────────────────────────────── */
-.memory{background:var(--cream); padding:100px 24px;}
-.memory-inner {
-  max-width:900px; margin:0 auto;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:60px; align-items:center;
-}
-.memory-text h2 {
-  font-family:'Playfair Display',serif;
-  font-weight:600;
-  font-size:clamp(24px,3.5vw,36px);
-  line-height:1.2; color:var(--ink); margin-bottom:16px;
-}
-.memory-text h2 em{font-style:italic; color:var(--g);}
-.memory-text p {
-  font-size:15px; font-weight:300;
-  color:var(--stone2); line-height:1.85; margin-bottom:16px;
-}
-
-/* Notification mockup */
-.notif-wrap {
-  background:var(--ink);
-  border-radius:24px; padding:32px;
-  display:flex; flex-direction:column; gap:16px;
-}
-.notif-label-inner{font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.3);}
-.notif-card {
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:16px; padding:16px;
-  display:flex; align-items:flex-start; gap:12px;
-}
-.notif-icon {
-  width:42px; height:42px; background:var(--g);
-  border-radius:10px; display:flex; align-items:center; justify-content:center;
-  font-size:20px; flex-shrink:0;
-}
-.notif-app{font-size:10px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:3px;}
-.notif-title{font-size:14px; font-weight:600; color:#fff; margin-bottom:3px;}
-.notif-desc{font-size:12px; font-weight:300; color:rgba(255,255,255,.55); line-height:1.5;}
-.notif-time{font-size:10px; color:rgba(255,255,255,.25); margin-top:4px;}
-.notif-tagline{font-size:12px; color:rgba(255,255,255,.3); font-weight:300; line-height:1.6;}
-
-/* ────────────────────────────────────────
-   PLANS — dark
-──────────────────────────────────────── */
-.plans{background:var(--ink2); padding:100px 24px;}
-.plans-inner{max-width:780px; margin:0 auto; text-align:center;}
-.plans .section-label{color:rgba(255,255,255,.35);}
-.plans .section-title{color:var(--white);}
-.plans .section-sub{color:rgba(255,255,255,.45); margin:12px auto 0;}
-
-.plans-grid {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px; margin-top:48px; text-align:left;
-}
-
-.plan-card {
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:20px; padding:32px 28px;
-  position:relative;
-}
-.plan-card.pro {
-  background:rgba(31,168,85,.08);
-  border-color:rgba(31,168,85,.4);
-  box-shadow:0 0 0 1px rgba(31,168,85,.2), 0 8px 32px rgba(31,168,85,.1);
-}
-.plan-badge-pro {
-  position:absolute; top:-1px; right:24px;
-  background:var(--g); color:#fff;
-  font-family:'Syne',sans-serif; font-weight:700;
-  font-size:9px; letter-spacing:1px; padding:4px 12px;
-  border-radius:0 0 8px 8px;
-}
-.plan-name{font-family:'Syne',sans-serif; font-weight:800; font-size:18px; color:#fff; margin-bottom:6px;}
-.plan-price{font-family:'Playfair Display',serif; font-weight:700; font-size:34px; color:#fff; line-height:1; margin-bottom:4px;}
-.plan-price span{font-size:15px; font-weight:300; color:rgba(255,255,255,.4); font-family:'DM Sans',sans-serif;}
-.plan-alt{font-size:12px; color:rgba(255,255,255,.35); font-weight:300; margin-bottom:24px;}
-.plan-features{list-style:none; display:flex; flex-direction:column; gap:10px;}
-.plan-features li{display:flex; align-items:flex-start; gap:10px; font-size:13px; color:rgba(255,255,255,.8); font-weight:300; line-height:1.4;}
-.feat-icon{width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9px; flex-shrink:0; margin-top:1px; font-weight:700;}
-.feat-icon.yes{background:rgba(31,168,85,.25); color:var(--g);}
-.feat-icon.no{background:rgba(255,255,255,.07); color:rgba(255,255,255,.25);}
-.feat-text.locked{color:rgba(255,255,255,.3);}
-
-/* ────────────────────────────────────────
-   CTA — cream
-──────────────────────────────────────── */
-.cta{background:var(--cream); padding:100px 24px 120px; text-align:center; position:relative; overflow:hidden;}
-.cta::before{
-  content:''; position:absolute;
-  width:600px; height:600px;
-  background:radial-gradient(circle, rgba(31,168,85,.08) 0%, transparent 70%);
-  top:50%; left:50%; transform:translate(-50%,-50%);
-  pointer-events:none;
-}
-.cta-inner{max-width:560px; margin:0 auto; position:relative; z-index:1;}
-.cta-inner h2{
-  font-family:'Playfair Display',serif; font-weight:700;
-  font-size:clamp(30px,5.5vw,52px);
-  line-height:1.12; color:var(--ink); margin-bottom:16px;
-}
-.cta-inner h2 em{font-style:italic; color:var(--g);}
-.cta-inner p{font-size:15px; font-weight:300; color:var(--stone2); line-height:1.75; margin-bottom:40px;}
-
-.counter {
-  display:inline-flex; align-items:center; gap:8px;
-  background:#fff; border:1px solid var(--border);
-  border-radius:40px; padding:8px 18px;
-  font-size:13px; color:var(--stone2); font-weight:400;
-  margin-bottom:32px;
-  box-shadow:0 2px 12px rgba(0,0,0,.06);
-}
-.counter-num{font-family:'Syne',sans-serif; font-weight:800; font-size:16px; color:var(--g);}
-
-/* CTA form — cream version */
-.cta .form-row{
-  background:#fff;
-  border-color:var(--border);
-  box-shadow:0 2px 16px rgba(0,0,0,.06);
-}
-.cta .form-row:focus-within{
-  border-color:var(--g);
-  box-shadow:0 2px 16px rgba(31,168,85,.12);
-}
-.cta .form-row input{color:var(--ink);}
-.cta .form-row input::placeholder{color:var(--stone);}
-.cta .form-note{color:var(--stone);}
-.cta .success-msg{
-  background:var(--gs); border-color:var(--gm); color:var(--g2);
-}
-
-/* ────────────────────────────────────────
-   FOOTER
-──────────────────────────────────────── */
-footer{
-  background:var(--ink);
-  border-top:1px solid rgba(255,255,255,.08);
-  padding:32px 24px;
-}
-.footer-inner{
-  max-width:900px; margin:0 auto;
-  display:flex; align-items:center; justify-content:space-between;
-  flex-wrap:wrap; gap:12px;
-}
-.footer-logo{font-family:'Syne',sans-serif; font-weight:800; font-size:16px; color:rgba(255,255,255,.8);}
-.footer-logo span{color:var(--g);}
-.footer-links{display:flex; gap:24px;}
-.footer-links a{font-size:13px; color:rgba(255,255,255,.35); text-decoration:none; font-weight:300; transition:color .15s;}
-.footer-links a:hover{color:rgba(255,255,255,.8);}
-.footer-note{font-size:11px; color:rgba(255,255,255,.2); font-weight:300; width:100%;}
-
-/* ────────────────────────────────────────
-   ANIMATIONS
-──────────────────────────────────────── */
-@keyframes fadeUp{
-  from{opacity:0; transform:translateY(20px);}
-  to{opacity:1; transform:translateY(0);}
-}
-.reveal{opacity:0; transform:translateY(24px); transition:opacity .65s ease, transform .65s ease;}
-.reveal.visible{opacity:1; transform:translateY(0);}
-
-/* ────────────────────────────────────────
-   MOBILE
-──────────────────────────────────────── */
-@media(max-width:680px){
-  .problem-grid, .memory-inner, .steps-grid, .plans-grid{
-    grid-template-columns:1fr; gap:24px;
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Revimo — Your memories. Saved before they disappear.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+  <style>
+  /* ─── TOKENS ── */
+  :root {
+    --tc:    #b5613a;   /* terracotta from JPEG */
+    --tc-dk: #8c4425;
+    --tc-lt: #d4886a;
+    --paper: #ede8de;   /* card stock from JPEG */
+    --soft:  #e4dcd0;
+    --hero:  #100d09;
+    --ink:   #1e1a15;
+    --ink2:  #4a3d32;
+    --ink3:  #8a7a6e;
+    /* app preview tokens (from revimo_preview_v1) */
+    --cream: #faf8f5;
+    --warm:  #f4f1ec;
+    --warm2: #ede8e0;
+    --border:#e8e3dc;
+    --stone: #9e9489;
+    --stone2:#7a7168;
+    --tc-s:  #f5ebe4;
+    --tc-m:  #e8c9b5;
+    --sh:    0 1px 3px #0000000a, 0 4px 16px #0000000a;
+    --sh2:   0 2px 8px #00000012, 0 8px 32px #0000000e;
+    --sh3:   0 4px 24px #00000018, 0 16px 48px #00000012;
+    --gold:  #c49a3c;
   }
-  .form-row{
-    flex-direction:column; padding:12px; gap:8px;
-    border-radius:14px;
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); overflow-x: hidden; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+    height: 62px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 52px;
+    transition: background 0.3s, border-color 0.3s;
   }
-  .form-btn{width:100%; padding:14px; border-radius:10px;}
-  footer .footer-inner{flex-direction:column; align-items:flex-start;}
-}
-</style>
+  nav.scrolled {
+    background: rgba(237,232,222,0.94); backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(181,97,58,0.12);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
+  .nav-logo-mark { width: 36px; height: 20px; display: block; flex-shrink: 0; overflow: visible; }
+  .nav-logo-name {
+    font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 400; letter-spacing: 0.02em;
+    color: #fff; transition: color 0.3s; white-space: nowrap; line-height: 1;
+  }
+  .nav-logo-name .re { color: var(--tc); }
+  nav.scrolled .nav-logo-name { color: var(--ink); }
+  nav.scrolled .nav-logo-name .re { color: var(--tc); }
+  .nav-right { display: flex; align-items: center; gap: 28px; }
+  .nav-link { font-size: 0.82rem; color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.2s; }
+  .nav-link:hover { color: #fff; }
+  nav.scrolled .nav-link { color: var(--ink2); }
+  nav.scrolled .nav-link:hover { color: var(--tc); }
+  .nav-btn {
+    border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1);
+    color: #fff; padding: 8px 22px; border-radius: 100px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500;
+    text-decoration: none; cursor: pointer; transition: background 0.2s, transform 0.15s;
+    backdrop-filter: blur(4px);
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.22); transform: translateY(-1px); }
+  nav.scrolled .nav-btn { background: var(--tc); border-color: var(--tc); }
+  nav.scrolled .nav-btn:hover { background: var(--tc-dk); border-color: var(--tc-dk); }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative; min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 100px 28px 90px; overflow: hidden; background: var(--hero);
+  }
+  .h-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 90% 55% at 50% 0%,   #2e1508 0%, transparent 60%),
+      radial-gradient(ellipse 55% 65% at 15% 85%,  #1e0d05 0%, transparent 55%),
+      radial-gradient(ellipse 45% 60% at 85% 75%,  #160906 0%, transparent 55%),
+      linear-gradient(180deg, #0c0906 0%, #150f0a 50%, #0e0b08 100%);
+  }
+  .h-grain {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.28;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23g)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+  .h-bloom {
+    position: absolute; z-index: 2; pointer-events: none;
+    top: -8%; left: 50%; transform: translateX(-50%);
+    width: 820px; height: 580px;
+    background: radial-gradient(ellipse, rgba(181,97,58,0.16) 0%, rgba(181,97,58,0.04) 40%, transparent 68%);
+  }
+  .h-rule {
+    position: absolute; z-index: 2; pointer-events: none;
+    left: 8%; right: 8%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(181,97,58,0.25) 25%, rgba(181,97,58,0.25) 75%, transparent);
+  }
+  .h-rule.t { top: 13%; } .h-rule.b { bottom: 14%; }
+  .hero > * { position: relative; z-index: 10; }
+
+  .hero-brand {
+    display: flex; flex-direction: column; align-items: center; gap: 20px;
+    margin-bottom: 44px; animation: fadeUp 1s ease both;
+  }
+  .hero-logo-mark { width: 110px; height: 60px; overflow: visible; display: block; filter: drop-shadow(0 0 28px rgba(181,97,58,0.55)); }
+  .hero-app-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.1rem, 5.5vw, 3.6rem); font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase;
+    color: #fff; text-shadow: 0 0 60px rgba(181,97,58,0.35), 0 2px 24px rgba(0,0,0,0.6);
+  }
+  .hero-divider {
+    width: 44px; height: 1px; margin: 0 auto 44px;
+    background: linear-gradient(90deg, transparent, rgba(181,97,58,0.65), transparent);
+    animation: fadeUp 1s 0.08s ease both;
+  }
+  h1.hero-tagline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 6.5vw, 5.2rem); font-weight: 500; line-height: 1.1; letter-spacing: -0.025em;
+    color: #fff; max-width: 880px; margin: 0 auto 26px;
+    text-shadow: 0 4px 60px rgba(0,0,0,0.9);
+    animation: fadeUp 1s 0.14s ease both;
+  }
+  h1.hero-tagline em { font-style: italic; color: var(--tc-lt); text-shadow: 0 0 70px rgba(181,97,58,0.7), 0 4px 40px rgba(0,0,0,0.5); }
+  p.hero-sub {
+    font-size: clamp(0.95rem, 1.8vw, 1.12rem); font-weight: 300; line-height: 1.8;
+    color: rgba(255,255,255,0.58); max-width: 500px; margin: 0 auto 52px;
+    animation: fadeUp 1s 0.22s ease both;
+  }
+  .hero-form-wrap { animation: fadeUp 1s 0.3s ease both; }
+  .hero-form {
+    display: flex; align-items: center; gap: 0;
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 100px; padding: 7px 7px 7px 26px;
+    max-width: 460px; margin: 0 auto; backdrop-filter: blur(10px);
+    transition: border-color 0.25s, background 0.25s;
+  }
+  .hero-form:focus-within { border-color: rgba(181,97,58,0.6); background: rgba(255,255,255,0.1); }
+  .hero-form input {
+    flex: 1; min-width: 0; border: none; outline: none; background: transparent;
+    font-family: 'DM Sans', sans-serif; font-size: 0.92rem; font-weight: 300; color: #fff;
+  }
+  .hero-form input::placeholder { color: rgba(255,255,255,0.3); }
+  .hero-form button {
+    flex-shrink: 0; background: var(--tc); color: #fff; border: none;
+    padding: 13px 22px; border-radius: 100px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500;
+    cursor: pointer; white-space: nowrap;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 22px rgba(181,97,58,0.45);
+  }
+  .hero-form button:hover { background: var(--tc-dk); transform: translateY(-1px); }
+  .hero-form-note { font-size: 0.7rem; color: rgba(255,255,255,0.28); margin-top: 13px; text-align: center; }
+  .hero-form-note span { color: rgba(181,97,58,0.75); }
+  .hero-ok { display: none; flex-direction: column; align-items: center; gap: 8px; max-width: 460px; margin: 0 auto; }
+  .hero-ok.show { display: flex; }
+  .hero-ok-star { font-size: 1.6rem; color: var(--tc-lt); line-height: 1; }
+  .hero-ok strong { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-style: italic; color: #fff; }
+  .hero-ok span { font-size: 0.8rem; color: rgba(255,255,255,0.45); }
+  .scroll-hint {
+    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 7px;
+    color: rgba(255,255,255,0.22); font-size: 0.62rem; letter-spacing: 0.13em; text-transform: uppercase;
+    z-index: 10; animation: fadeUp 1.3s 0.5s ease both;
+  }
+  .scroll-hint svg { animation: bob 2.5s ease-in-out infinite; }
+
+  /* ─── PROBLEM ─── */
+  .problem {
+    background: var(--soft); padding: 72px 48px; text-align: center;
+    border-bottom: 1px solid rgba(181,97,58,0.12);
+  }
+  .problem p {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.1rem, 2.4vw, 1.6rem); font-weight: 400; font-style: italic;
+    color: var(--ink2); max-width: 680px; margin: 0 auto; line-height: 1.7;
+  }
+  .problem p strong { font-style: normal; color: var(--ink); font-weight: 600; }
+
+  /* ─── SHARED ─── */
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 96px 48px; }
+  .s-label { display: block; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--tc); margin-bottom: 14px; }
+  .s-title { font-family: 'Playfair Display', serif; font-size: clamp(1.9rem, 3.4vw, 2.75rem); font-weight: 500; line-height: 1.18; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 50px; }
+  .s-title em { font-style: italic; color: var(--tc); }
+
+  /* ─── HOW IT WORKS ─── */
+  .how-grid { display: grid; grid-template-columns: repeat(3,1fr); border-radius: 20px; overflow: hidden; border: 1px solid rgba(181,97,58,0.13); }
+  .how-step { background: #fff; padding: 40px 32px; border-right: 1px solid rgba(181,97,58,0.1); transition: background 0.22s; }
+  .how-step:last-child { border-right: none; }
+  .how-step:hover { background: var(--soft); }
+  .how-num { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 400; color: rgba(181,97,58,0.13); line-height: 1; margin-bottom: 14px; }
+  .how-ico { font-size: 1.65rem; display: block; margin-bottom: 12px; }
+  .how-step h3 { font-family: 'Playfair Display', serif; font-size: 1.12rem; font-weight: 500; color: var(--ink); margin-bottom: 10px; }
+  .how-step p { font-size: 0.85rem; color: var(--ink2); line-height: 1.72; font-weight: 300; }
+
+  /* ─── FEATURES ─── */
+  .feat-bg { background: var(--soft); }
+  .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px,1fr)); gap: 16px; }
+  .feat { background: #fff; border-radius: 18px; padding: 30px 26px; border: 1px solid rgba(181,97,58,0.1); transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
+  .feat:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(181,97,58,0.1); border-color: rgba(181,97,58,0.28); }
+  .feat-ico { width: 44px; height: 44px; border-radius: 12px; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 16px; }
+  .feat h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 500; color: var(--ink); margin-bottom: 8px; }
+  .feat p { font-size: 0.84rem; color: var(--ink2); line-height: 1.7; font-weight: 300; }
+
+  /* ─── MEMORY DARK ─── */
+  .mem-dark { background: var(--ink); padding: 108px 48px; text-align: center; position: relative; overflow: hidden; }
+  .mem-dark::before {
+    content: ''; position: absolute; top: -90px; left: 50%; transform: translateX(-50%);
+    width: 560px; height: 560px;
+    background: radial-gradient(circle, rgba(181,97,58,0.22) 0%, transparent 65%); pointer-events: none;
+  }
+  .mem-dark > * { position: relative; z-index: 1; }
+  .mem-label { display: block; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--tc-lt); margin-bottom: 20px; }
+  .mem-title { font-family: 'Playfair Display', serif; font-size: clamp(1.9rem, 4vw, 3.1rem); font-weight: 400; font-style: italic; line-height: 1.22; letter-spacing: -0.02em; color: #fff; max-width: 620px; margin: 0 auto 20px; }
+  .mem-sub { font-size: 0.94rem; font-weight: 300; color: rgba(255,255,255,0.48); max-width: 360px; margin: 0 auto 50px; line-height: 1.74; }
+  .notif-card {
+    display: inline-flex; align-items: center; gap: 16px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 18px; padding: 18px 28px; backdrop-filter: blur(8px);
+  }
+  .notif-ico { font-size: 1.4rem; }
+  .notif-app { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tc-lt); }
+  .notif-msg { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.9rem; color: rgba(255,255,255,0.88); margin-top: 3px; }
+
+  /* ─── APP PREVIEW ─── */
+  .preview-section { background: var(--soft); padding: 96px 48px; }
+  .preview-inner { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+
+  /* Phone shell — copied from preview v1 proportions */
+  .phone {
+    width: 300px; background: #fff; border-radius: 40px;
+    border: 1px solid var(--border);
+    box-shadow: var(--sh3), 0 0 0 5px var(--warm);
+    overflow: hidden; flex-shrink: 0;
+    /* Fixed height so inner content doesn't overflow */
+    height: 580px; display: flex; flex-direction: column;
+  }
+  .ph-top { background: var(--cream); padding-bottom: 2px; flex-shrink: 0; }
+  .ph-notch { width: 100px; height: 24px; background: var(--cream); border-radius: 0 0 14px 14px; margin: 0 auto; display: flex; align-items: center; justify-content: center; }
+  .ph-notch-cam { width: 7px; height: 7px; background: var(--warm2); border-radius: 50%; border: 1.5px solid var(--border); }
+  .ph-sbar { display: flex; align-items: center; justify-content: space-between; padding: 4px 18px 0; font-size: 10.5px; font-weight: 600; color: var(--stone); flex-shrink: 0; }
+  .ph-app-hdr { display: flex; align-items: center; padding: 8px 14px 7px; gap: 9px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .ph-app-name { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: -0.3px; }
+  .ph-app-name .re { color: #b5613a; }
+  .ph-app-name .vi { color: #1e1a15; }
+  .ph-hdr-r { margin-left: auto; display: flex; gap: 5px; }
+  .ph-icon-btn { width: 28px; height: 28px; background: var(--warm); border: 1px solid var(--border); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+  .ph-tabs { display: flex; border-bottom: 1px solid var(--border); background: #fff; flex-shrink: 0; }
+  .ph-tab { flex: 1; padding: 7px 0 6px; text-align: center; font-size: 9.5px; font-weight: 500; color: var(--stone); border-bottom: 2px solid transparent; }
+  .ph-tab.active { color: var(--tc); border-bottom-color: var(--tc); font-weight: 600; }
+  .ph-stats { display: flex; gap: 6px; padding: 8px 12px; border-bottom: 1px solid var(--border); background: var(--warm); flex-shrink: 0; }
+  .ph-stat { flex: 1; background: #fff; border: 1px solid var(--border); border-radius: 9px; padding: 7px 6px; text-align: center; }
+  .ph-stat-v { font-size: 15px; font-weight: 700; color: var(--tc); line-height: 1.1; }
+  .ph-stat-l { font-size: 8px; color: var(--stone2); margin-top: 2px; line-height: 1.3; }
+  .ph-chips { display: flex; gap: 5px; padding: 6px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .ph-chip { background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: 4px 10px; font-size: 9.5px; font-weight: 500; color: var(--stone2); white-space: nowrap; }
+  .ph-chip.active { background: var(--tc); border-color: var(--tc); color: #fff; }
+  /* Gallery scrollable area - takes remaining height */
+  .ph-gallery { flex: 1; overflow-y: auto; padding: 9px 12px; scrollbar-width: none; background: var(--warm); min-height: 0; }
+  .ph-gallery::-webkit-scrollbar { display: none; }
+  .ph-date-grp { margin-bottom: 12px; }
+  .ph-date-sep { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; }
+  .ph-date-l { flex: 1; height: 1px; background: var(--border); }
+  .ph-date-t { font-size: 8.5px; font-weight: 600; color: var(--stone); background: var(--warm2); border: 1px solid var(--border); border-radius: 20px; padding: 2px 9px; white-space: nowrap; letter-spacing: .5px; text-transform: uppercase; }
+  .ph-grid3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 4px; }
+  .ph-card { position: relative; border-radius: 9px; overflow: hidden; background: var(--warm2); border: 1px solid var(--border); aspect-ratio: 9/14; }
+  .ph-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ph-card-meta { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, #000b); padding: 10px 5px 4px; }
+  .ph-card-time { font-size: 8px; color: #ffffffdd; font-weight: 500; }
+  .ph-card-loc { font-size: 7.5px; color: #ffc9a0; margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* Bottom nav */
+  .ph-bnav { display: flex; border-top: 1px solid var(--border); background: #fff; flex-shrink: 0; }
+  .ph-nitem { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 0 9px; color: var(--stone); font-size: 8.5px; font-weight: 500; }
+  .ph-nitem.active { color: var(--tc); }
+  .ph-nic { font-size: 16px; }
+
+  /* ─── INFO STRIP ─── */
+  .strip { background: var(--ink); padding: 18px 48px; display: flex; align-items: center; justify-content: center; gap: 36px; flex-wrap: wrap; }
+  .strip-item { display: flex; align-items: center; gap: 8px; font-size: 0.76rem; color: rgba(255,255,255,0.48); white-space: nowrap; }
+  .strip-div { width: 1px; height: 15px; background: rgba(255,255,255,0.1); }
+
+  /* ─── WAITLIST ─── */
+  .waitlist { padding: 110px 48px; text-align: center; position: relative; }
+  .waitlist::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 58% 65% at 50% 50%, rgba(181,97,58,0.06) 0%, transparent 70%); pointer-events: none; }
+  .waitlist > * { position: relative; z-index: 1; }
+  .live-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--soft); border: 1px solid rgba(181,97,58,0.18); padding: 6px 16px; border-radius: 100px; font-size: 0.72rem; color: var(--ink2); margin-bottom: 28px; }
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--tc); animation: pulse 2s ease-in-out infinite; }
+  .waitlist-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4.2vw, 3.5rem); font-weight: 500; line-height: 1.12; letter-spacing: -0.02em; color: var(--ink); max-width: 660px; margin: 0 auto 16px; }
+  .waitlist-title em { font-style: italic; color: var(--tc); }
+  .waitlist-sub { font-size: 0.98rem; font-weight: 300; color: var(--ink2); max-width: 400px; margin: 0 auto 44px; line-height: 1.75; }
+  .wform-wrap { max-width: 460px; margin: 0 auto; }
+  .wform { display: flex; align-items: center; gap: 0; background: #fff; border: 1.5px solid rgba(181,97,58,0.22); border-radius: 100px; padding: 7px 7px 7px 22px; box-shadow: 0 4px 28px rgba(181,97,58,0.1); transition: border-color 0.2s, box-shadow 0.2s; }
+  .wform:focus-within { border-color: rgba(181,97,58,0.55); box-shadow: 0 6px 36px rgba(181,97,58,0.18); }
+  .wform input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 300; color: var(--ink); }
+  .wform input::placeholder { color: var(--ink3); }
+  .wform button { flex-shrink: 0; background: var(--tc); color: #fff; border: none; padding: 13px 22px; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: background 0.2s, transform 0.15s; }
+  .wform button:hover { background: var(--tc-dk); transform: translateY(-1px); }
+  .wform-note { font-size: 0.7rem; color: var(--ink3); margin-top: 12px; }
+  .wform-note span { color: var(--tc); }
+  .wform-ok { display: none; flex-direction: column; align-items: center; gap: 10px; background: var(--soft); border: 1px solid rgba(181,97,58,0.2); border-radius: 20px; padding: 28px 32px; }
+  .wform-ok.show { display: flex; }
+  .wform-ok-ico { font-size: 2rem; }
+  .wform-ok h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 500; color: var(--ink); }
+  .wform-ok p { font-size: 0.82rem; color: var(--ink2); text-align: center; line-height: 1.65; }
+
+  /* ─── FOOTER ─── */
+  footer { border-top: 1px solid rgba(181,97,58,0.12); padding: 28px 52px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .footer-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .footer-brand svg { width: 32px; height: 18px; overflow: visible; }
+  .footer-brand span { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--ink); }
+  footer nav a { font-size: 0.74rem; color: var(--ink3); text-decoration: none; margin-left: 22px; transition: color 0.2s; }
+  footer nav a:hover { color: var(--tc); }
+  .footer-copy { font-size: 0.7rem; color: var(--ink3); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse  { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(0.78); } }
+  @keyframes bob    { 0%,100% { transform:translateY(0); } 50% { transform:translateY(6px); } }
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 860px) {
+    nav { padding: 0 20px; } .nav-link { display: none; }
+    .problem { padding: 58px 24px; }
+    .wrap { padding: 68px 20px; }
+    .how-grid { grid-template-columns: 1fr; border-radius: 16px; }
+    .how-step { border-right: none; border-bottom: 1px solid rgba(181,97,58,0.1); }
+    .how-step:last-child { border-bottom: none; }
+    .preview-section { padding: 68px 24px; }
+    .preview-inner { grid-template-columns: 1fr; gap: 44px; }
+    .preview-inner .phone { margin: 0 auto; }
+    .mem-dark { padding: 68px 24px; }
+    .strip { padding: 16px 20px; gap: 18px; } .strip-div { display: none; }
+    .waitlist { padding: 72px 20px; } .wform-wrap { max-width: 100%; }
+    footer { padding: 22px 20px; flex-direction: column; text-align: center; }
+    footer nav { display: flex; justify-content: center; }
+  }
+  </style>
 </head>
 <body>
 
+<!-- ══ LOGO SYMBOL ══ -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="logo" viewBox="160 150 700 280">
+    <path fill="currentColor" d="M622.158936,381.930023 C625.083435,371.739014 625.287292,361.537598 625.586731,351.449890 C626.536194,319.463013 625.612305,287.517792 621.703613,255.714676 C619.526855,238.003632 615.693604,220.898895 603.411682,206.958237 C584.525635,185.521500 559.433350,178.524582 532.429077,187.917053 C499.243561,199.459442 479.764923,223.745056 471.392975,257.040436 C464.170563,285.764130 462.328522,315.170746 463.093842,344.751129 C463.516296,361.080444 464.845428,377.304199 467.878937,393.368805 C468.002350,394.022400 468.142670,394.681458 468.172760,395.342621 C468.349274,399.219788 467.323517,402.540527 462.939911,403.086273 C458.623718,403.623566 456.372894,400.758362 455.837158,396.959625 C454.373962,386.584686 452.908844,376.192230 452.016846,365.757782 C449.267548,333.596161 450.592346,301.567596 455.752960,269.692657 C461.511932,234.122086 476.986450,204.491806 508.724152,185.507523 C532.275391,171.420105 557.496826,166.946808 583.904419,176.860977 C608.784119,186.201508 623.182068,205.003555 630.280396,230.054581 C634.761780,245.869797 635.832947,262.173401 637.109863,278.408691 C638.964783,301.992828 639.537659,325.638885 639.015442,349.300507 C638.765503,360.622803 638.714050,371.955170 638.163879,383.263123 C637.807373,390.591003 636.393616,397.628448 628.009033,400.486633 C623.795044,401.923126 619.787598,401.345245 615.809509,399.882996 C602.764954,395.087952 590.962463,387.813751 578.879211,381.130096 C550.896484,365.651978 522.959290,350.096130 493.882751,336.714386 C492.673035,336.157623 491.474518,335.568390 490.309692,334.923859 C487.354889,333.288940 483.932526,331.764343 486.056274,327.398987 C487.599518,324.226898 491.827637,323.392120 495.643433,325.268127 C525.229248,339.813934 554.757202,354.478882 584.420532,368.864655 C594.600891,373.801880 605.112488,378.056854 615.480225,382.606445 C617.674255,383.569214 619.895142,384.355774 622.158936,381.930023 z"/>
+    <path fill="currentColor" d="M401.277100,359.901031 C401.928650,370.342346 402.614685,380.300995 403.190918,390.265961 C403.334045,392.740906 403.588684,395.265625 402.747986,397.701874 C401.623535,400.960480 399.694061,403.281342 395.932709,403.219452 C392.272430,403.159210 390.027985,401.057434 389.067871,397.718781 C388.476318,395.661713 388.156738,393.462860 388.117523,391.320282 C387.706024,368.842133 387.003967,346.360504 387.123657,323.883789 C387.253906,299.415009 388.349152,274.919189 391.891632,250.699524 C395.215973,227.971802 401.775482,206.291550 420.501068,190.816772 C442.961304,172.255676 468.342072,167.156250 496.340271,175.268204 C497.767761,175.681793 499.125458,176.367447 500.467804,177.024231 C500.856628,177.214493 501.078705,177.745621 501.861481,178.728531 C497.156281,181.480057 494.423401,187.056763 487.489685,185.538071 C453.812775,178.161713 421.502472,196.782852 410.448303,229.551483 C405.670288,243.715332 403.708252,258.377869 402.484589,273.113220 C400.679657,294.847534 399.503510,316.637207 400.278076,338.471832 C400.525909,345.457733 400.935455,352.437897 401.277100,359.901031 z"/>
+    <path fill="currentColor" d="M555.410156,224.685303 C565.436646,242.789764 569.854126,262.122314 572.366211,282.101349 C574.138855,296.199249 574.603638,310.303772 574.303467,324.467773 C574.161621,331.159607 571.819458,334.822510 567.919800,334.594055 C563.925781,334.360016 561.571655,330.747437 561.967346,324.110687 C563.408447,299.941833 560.463989,276.285461 554.099792,253.002838 C549.205444,235.097473 540.177246,219.612518 526.946289,206.531403 C525.444458,205.046539 521.406677,203.622467 524.679077,200.305695 C528.339905,196.595291 533.529419,195.961472 536.143250,198.788559 C543.400574,206.638199 549.900391,215.068222 555.410156,224.685303 z"/>
+  </symbol>
+</svg>
+
+<!-- ══ NAV ══ -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <svg class="nav-logo-mark" viewBox="160 150 700 280" style="color:#b5613a">
+      <use href="#logo"/>
+    </svg>
+    <span class="nav-logo-name"><span class="re">Re</span>vimo</span>
+  </a>
+  <div class="nav-right">
+    <a href="#how-it-works" class="nav-link">How it works</a>
+    <a href="#waitlist" class="nav-btn">Join waitlist</a>
+  </div>
+</nav>
+
 <!-- ══ HERO ══ -->
 <section class="hero">
-  <div class="hero-inner">
+  <div class="h-bg"></div><div class="h-grain"></div><div class="h-bloom"></div>
+  <div class="h-rule t"></div><div class="h-rule b"></div>
 
-    <div class="logo-wrap">
-      <div class="logo-icon">
-        <svg viewBox="0 0 80 80" fill="none">
-          <path d="M54 18C54 18 24 18 24 34C24 50 54 50 54 50" stroke="white" stroke-width="7" stroke-linecap="round" fill="none"/>
-          <path d="M24 50C24 50 54 50 54 66C54 76 24 76 24 76" stroke="white" stroke-width="7" stroke-linecap="round" fill="none"/>
-          <circle cx="54" cy="18" r="7" fill="white"/>
-          <circle cx="24" cy="76" r="7" fill="white"/>
-        </svg>
-      </div>
-      <div class="logo-name">StatusVault</div>
+  <div class="hero-brand">
+    <svg class="hero-logo-mark" viewBox="160 150 700 280" style="color:#b5613a"><use href="#logo"/></svg>
+    <div class="hero-app-name"><span style="color:#b5613a;text-shadow:0 0 40px rgba(181,97,58,0.7)">Re</span>vimo</div>
+  </div>
+
+  <div class="hero-divider"></div>
+
+  <h1 class="hero-tagline">Your memories.<br>Saved before they <em>disappear.</em></h1>
+  <p class="hero-sub">
+    Every status you post vanishes after 24 hours.<br>
+    Every profile photo you change is gone forever.<br>
+    Revimo saves them all — quietly, automatically, beautifully.
+  </p>
+
+  <div class="hero-form-wrap" id="hero-form-wrap">
+    <div class="hero-form">
+      <input type="email" id="hero-email" placeholder="Your email address" autocomplete="email"/>
+      <button onclick="submitEmail('hero')">Get early access</button>
     </div>
+    <p class="hero-form-note">Free to join &nbsp;·&nbsp; <span>No spam, ever</span> &nbsp;·&nbsp; Unsubscribe anytime</p>
+  </div>
+  <div class="hero-ok" id="hero-ok">
+    <div class="hero-ok-star">✦</div>
+    <strong>You're on the list.</strong>
+    <span>We'll reach out the moment Revimo launches.</span>
+  </div>
 
-    <div class="badge">
-      <div class="badge-dot"></div>
-      Coming September 2026 · Android
-    </div>
-
-    <h1 class="headline">
-      Your memories.<br>
-      Saved before<br>they <em>disappear.</em>
-    </h1>
-
-    <p class="subline">
-      WhatsApp deletes your statuses after 24 hours.
-      <strong>No archive. No history. Gone forever.</strong>
-      StatusVault saves everything automatically.
-    </p>
-
-    <div class="form-wrap">
-      <div id="formContainer">
-        <div class="form-row">
-          <input type="email" id="emailInput" placeholder="your@email.com" autocomplete="email">
-          <button class="form-btn" onclick="handleSubmit()">Join the waitlist</button>
-        </div>
-      </div>
-      <div class="success-msg" id="successMsg">
-        ✓ You're on the list. We'll reach out before launch with early access.
-      </div>
-      <p class="form-note" style="margin-top:10px;">No spam. One email when the app launches.</p>
-    </div>
-
-    <div class="scroll-hint">
-      <span>Scroll</span>
-      <div class="scroll-arrow">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path d="M6 2v8M3 7l3 3 3-3" stroke="rgba(255,255,255,.4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-    </div>
-
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
   </div>
 </section>
 
 <!-- ══ PROBLEM ══ -->
-<section class="problem">
-  <div class="problem-inner">
-    <span class="section-label reveal">The problem</span>
-    <div class="problem-grid">
-      <div class="problem-left reveal">
-        <h2>Every platform saves your content. <em>Except one.</em></h2>
-        <p>Instagram keeps your posts forever. Facebook keeps them. Snapchat keeps them.<br><br>
-        WhatsApp Status — used by 500 million people every day — deletes everything after 24 hours. The content you share with the people you love most disappears automatically.<br><br>
-        That's backwards. We're fixing it.</p>
-      </div>
-      <div class="stats-col reveal">
-        <div class="stat-card">
-          <div class="stat-num">500M</div>
-          <div class="stat-label">people use WhatsApp Status every day — more than Instagram Stories</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">24h</div>
-          <div class="stat-label">before your status is permanently deleted, with no archive and no way back</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">0</div>
-          <div class="stat-label">native archive features in WhatsApp. Until now.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<div class="problem">
+  <p>
+    WhatsApp deletes your statuses after <strong>24 hours.</strong><br>
+    Your profile photos are overwritten <strong>without a trace.</strong><br>
+    There is no native archive. <strong>Until now.</strong>
+  </p>
+</div>
 
 <!-- ══ HOW IT WORKS ══ -->
-<section class="how">
-  <div class="how-inner">
-    <span class="section-label reveal">How it works</span>
-    <h2 class="section-title reveal">Set it once. It runs forever.</h2>
-    <p class="section-sub reveal">StatusVault works silently in the background. You never need to remember to save anything.</p>
-    <div class="steps-grid">
-      <div class="step-card reveal">
-        <div class="step-num">1</div>
-        <h3>Install & grant access</h3>
-        <p>Open StatusVault, tap "Allow access to WhatsApp folder." One tap. Done.</p>
+<section id="how-it-works">
+  <div class="wrap">
+    <span class="s-label reveal">How it works</span>
+    <h2 class="s-title reveal">Install once.<br><em>Remember forever.</em></h2>
+    <div class="how-grid reveal">
+      <div class="how-step">
+        <span class="how-ico">📲</span>
+        <div class="how-num">01</div>
+        <h3>Install Revimo</h3>
+        <p>Download the app and grant access once. No account, no setup, no friction. Ready in seconds.</p>
       </div>
-      <div class="step-card reveal">
-        <div class="step-num">2</div>
-        <h3>Post as usual</h3>
-        <p>Keep using WhatsApp exactly as you always have. StatusVault monitors silently in the background.</p>
+      <div class="how-step">
+        <span class="how-ico">⚡</span>
+        <div class="how-num">02</div>
+        <h3>Your archive grows</h3>
+        <p>Every status you post, every profile photo you change — saved automatically in the background. Every single day.</p>
       </div>
-      <div class="step-card reveal">
-        <div class="step-num">3</div>
-        <h3>Your archive builds itself</h3>
-        <p>Every status, every profile photo change — saved automatically with date, time, and location.</p>
+      <div class="how-step">
+        <span class="how-ico">✦</span>
+        <div class="how-num">03</div>
+        <h3>Relive your moments</h3>
+        <p>A year from now Revimo shows you exactly what you posted today. Start now. Thank yourself later.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ MEMORY ══ -->
-<section class="memory">
-  <div class="memory-inner">
-    <div class="memory-text reveal">
-      <span class="section-label">The Memory feature</span>
-      <h2>One year ago today,<br>you posted <em>this.</em></h2>
-      <p>Once a year, StatusVault sends you a notification: "One year ago today, you posted 3 statuses. Tap to remember."</p>
-      <p>Your photos. Your words. The moments you shared with the people closest to you — brought back exactly one year later.</p>
+<!-- ══ FEATURES ══ -->
+<section class="feat-bg">
+  <div class="wrap">
+    <span class="s-label reveal">Features</span>
+    <h2 class="s-title reveal">Everything you'd<br><em>hate to lose.</em></h2>
+    <div class="feat-grid">
+      <div class="feat reveal">
+        <div class="feat-ico">⚡</div>
+        <h3>Fully automatic</h3>
+        <p>You don't have to do a thing. Revimo runs quietly in the background, capturing every status and profile photo.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-ico">🔒</div>
+        <h3>Private by design</h3>
+        <p>Your data never leaves your phone. No cloud, no sharing, no servers. Your memories belong to you only.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-ico">✦</div>
+        <h3>Memory feature</h3>
+        <p>Monthly and yearly flashbacks. "One year ago today, you shared this." The notification that stops you mid-scroll.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-ico">📷</div>
+        <h3>Profile photo archive</h3>
+        <p>Every time you change your profile photo, the old one is kept. A quiet record of who you've been.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-ico">🗂️</div>
+        <h3>Personal timeline</h3>
+        <p>A warm visual archive of everything you've shared — a diary that writes itself, one status at a time.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-ico">🌱</div>
+        <h3>Gets better over time</h3>
+        <p>The longer you use Revimo, the richer your archive. An investment that pays off entirely in memories.</p>
+      </div>
     </div>
-    <div class="notif-wrap reveal">
-      <div class="notif-label-inner">Memory notification — preview</div>
-      <div class="notif-card">
-        <div class="notif-icon">✨</div>
-        <div>
-          <div class="notif-app">StatusVault</div>
-          <div class="notif-title">One year ago today</div>
-          <div class="notif-desc">You posted 3 statuses on this day last year. Tap to remember.</div>
-          <div class="notif-time">now</div>
+  </div>
+</section>
+
+<!-- ══ MEMORY DARK ══ -->
+<section class="mem-dark">
+  <span class="mem-label">✦ &nbsp; The Memory feature</span>
+  <h2 class="mem-title">"One year ago today,<br>you shared this moment."</h2>
+  <p class="mem-sub">Start today. Thank yourself in a year.</p>
+  <div class="notif-card">
+    <div class="notif-ico">✦</div>
+    <div>
+      <div class="notif-app">Revimo &nbsp;·&nbsp; now</div>
+      <div class="notif-msg">One year ago today, you shared this moment.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ APP PREVIEW ══ -->
+<section class="preview-section">
+  <div class="preview-inner">
+    <div class="reveal">
+      <span class="s-label">The app</span>
+      <h2 class="s-title" style="margin-bottom:22px">Beautiful.<br><em>Effortless.</em></h2>
+      <p style="font-size:0.94rem;color:var(--ink2);line-height:1.82;font-weight:300;max-width:360px;">
+        Revimo feels like flipping through an old photo album — warm, personal, full of emotion. Every memory exactly where you left it.
+      </p>
+    </div>
+
+    <!-- Real app mockup from preview v1 -->
+    <div class="reveal" style="display:flex;justify-content:center;">
+      <div class="phone">
+        <div class="ph-top">
+          <div class="ph-notch"><div class="ph-notch-cam"></div></div>
+        </div>
+        <div class="ph-sbar"><span>9:41</span><span>⚡ 87%</span></div>
+        <div class="ph-app-hdr">
+          <svg width="24" height="13" viewBox="160 150 700 280" style="flex-shrink:0;color:#b5613a;overflow:visible;">
+            <use href="#logo"/>
+          </svg>
+          <div class="ph-app-name"><span class="re">Re</span><span class="vi">vimo</span></div>
+          <div class="ph-hdr-r">
+            <div class="ph-icon-btn">🗺</div>
+            <div class="ph-icon-btn">⚙️</div>
+          </div>
+        </div>
+        <div class="ph-tabs">
+          <div class="ph-tab active">📸 Statuses</div>
+          <div class="ph-tab">👤 Profile</div>
+          <div class="ph-tab">✦ Memory</div>
+          <div class="ph-tab">⭐ Pro</div>
+        </div>
+        <div class="ph-stats">
+          <div class="ph-stat"><div class="ph-stat-v">47</div><div class="ph-stat-l">Total<br>statuses</div></div>
+          <div class="ph-stat"><div class="ph-stat-v">12</div><div class="ph-stat-l">This<br>month</div></div>
+          <div class="ph-stat"><div class="ph-stat-v">38<span style="font-size:8px;color:var(--stone)">MB</span></div><div class="ph-stat-l">Archive<br>size</div></div>
+        </div>
+        <div class="ph-chips">
+          <div class="ph-chip active">All</div>
+          <div class="ph-chip">Today</div>
+          <div class="ph-chip">This week</div>
+          <div class="ph-chip">2025</div>
+        </div>
+        <div class="ph-gallery">
+          <div class="ph-date-grp">
+            <div class="ph-date-sep">
+              <div class="ph-date-l"></div>
+              <div class="ph-date-t">Today — 15 Apr</div>
+              <div class="ph-date-l"></div>
+            </div>
+            <div class="ph-grid3">
+              <!-- Card 1: Golden sunset over water -->
+              <div class="ph-card">
+                <svg viewBox="0 0 90 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;">
+                  <defs>
+                    <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#1a0a2e"/>
+                      <stop offset="40%" stop-color="#7c2d12"/>
+                      <stop offset="70%" stop-color="#ea580c"/>
+                      <stop offset="100%" stop-color="#fbbf24"/>
+                    </linearGradient>
+                    <linearGradient id="water1" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#c2410c"/>
+                      <stop offset="100%" stop-color="#431407"/>
+                    </linearGradient>
+                    <radialGradient id="sun1" cx="50%" cy="45%" r="18%">
+                      <stop offset="0%" stop-color="#fef08a"/>
+                      <stop offset="60%" stop-color="#fbbf24"/>
+                      <stop offset="100%" stop-color="#ea580c" stop-opacity="0"/>
+                    </radialGradient>
+                  </defs>
+                  <rect width="90" height="140" fill="url(#sky1)"/>
+                  <circle cx="45" cy="63" r="12" fill="url(#sun1)" opacity="0.95"/>
+                  <!-- sun glow -->
+                  <ellipse cx="45" cy="63" rx="22" ry="22" fill="#fbbf24" opacity="0.12"/>
+                  <!-- horizon -->
+                  <rect x="0" y="80" width="90" height="60" fill="url(#water1)"/>
+                  <!-- water shimmer lines -->
+                  <line x1="30" y1="87" x2="60" y2="87" stroke="#fbbf24" stroke-width="1.5" opacity="0.5"/>
+                  <line x1="20" y1="95" x2="70" y2="95" stroke="#f97316" stroke-width="1" opacity="0.35"/>
+                  <line x1="35" y1="103" x2="55" y2="103" stroke="#fbbf24" stroke-width="1" opacity="0.3"/>
+                  <!-- silhouette city -->
+                  <rect x="5" y="68" width="8" height="12" fill="#0c0412" opacity="0.8"/>
+                  <rect x="15" y="72" width="5" height="8" fill="#0c0412" opacity="0.8"/>
+                  <rect x="72" y="70" width="6" height="10" fill="#0c0412" opacity="0.8"/>
+                  <rect x="80" y="73" width="9" height="7" fill="#0c0412" opacity="0.8"/>
+                </svg>
+                <div class="ph-card-meta"><div class="ph-card-time">09:41</div><div class="ph-card-loc">📍 Milan</div></div>
+              </div>
+              <!-- Card 2: Misty mountain forest morning -->
+              <div class="ph-card">
+                <svg viewBox="0 0 90 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;">
+                  <defs>
+                    <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#e0e7ff"/>
+                      <stop offset="50%" stop-color="#bfdbfe"/>
+                      <stop offset="100%" stop-color="#93c5fd"/>
+                    </linearGradient>
+                    <linearGradient id="mist2" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#f8fafc" stop-opacity="0.7"/>
+                      <stop offset="100%" stop-color="#e2e8f0" stop-opacity="0.2"/>
+                    </linearGradient>
+                  </defs>
+                  <rect width="90" height="140" fill="url(#sky2)"/>
+                  <!-- back mountains -->
+                  <polygon points="0,85 25,40 50,85" fill="#94a3b8" opacity="0.5"/>
+                  <polygon points="20,85 50,35 80,85" fill="#64748b" opacity="0.55"/>
+                  <polygon points="50,85 75,45 90,85" fill="#475569" opacity="0.6"/>
+                  <!-- mist layer -->
+                  <rect x="0" y="75" width="90" height="20" fill="url(#mist2)"/>
+                  <!-- forest foreground -->
+                  <rect x="0" y="85" width="90" height="55" fill="#1e3a2f"/>
+                  <!-- trees -->
+                  <polygon points="10,85 17,58 24,85" fill="#14532d"/>
+                  <polygon points="22,85 30,52 38,85" fill="#166534"/>
+                  <polygon points="35,85 44,48 53,85" fill="#14532d"/>
+                  <polygon points="50,85 57,55 64,85" fill="#166534"/>
+                  <polygon points="63,85 70,50 77,85" fill="#14532d"/>
+                  <polygon points="72,85 79,57 86,85" fill="#166534"/>
+                  <!-- sunbeam -->
+                  <line x1="45" y1="0" x2="30" y2="90" stroke="#fef9c3" stroke-width="8" opacity="0.08"/>
+                  <line x1="55" y1="0" x2="55" y2="90" stroke="#fef9c3" stroke-width="5" opacity="0.06"/>
+                </svg>
+                <div class="ph-card-meta"><div class="ph-card-time">13:20</div><div class="ph-card-loc">📍 Milan</div></div>
+              </div>
+              <!-- Card 3: Warm candlelit evening -->
+              <div class="ph-card">
+                <svg viewBox="0 0 90 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;">
+                  <defs>
+                    <radialGradient id="candleglow" cx="50%" cy="60%" r="55%">
+                      <stop offset="0%" stop-color="#fef08a" stop-opacity="0.6"/>
+                      <stop offset="40%" stop-color="#f97316" stop-opacity="0.25"/>
+                      <stop offset="100%" stop-color="#1c0a00" stop-opacity="0"/>
+                    </radialGradient>
+                    <linearGradient id="nightbg" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#0f0a05"/>
+                      <stop offset="100%" stop-color="#1c1209"/>
+                    </linearGradient>
+                  </defs>
+                  <rect width="90" height="140" fill="url(#nightbg)"/>
+                  <!-- window glow from outside -->
+                  <rect x="55" y="15" width="28" height="38" rx="3" fill="#fef08a" opacity="0.07"/>
+                  <line x1="69" y1="15" x2="69" y2="53" stroke="#fef08a" stroke-width="0.8" opacity="0.12"/>
+                  <line x1="55" y1="34" x2="83" y2="34" stroke="#fef08a" stroke-width="0.8" opacity="0.12"/>
+                  <!-- stars -->
+                  <circle cx="12" cy="10" r="1" fill="#fff" opacity="0.7"/>
+                  <circle cx="35" cy="6" r="0.8" fill="#fff" opacity="0.5"/>
+                  <circle cx="22" cy="18" r="0.7" fill="#fff" opacity="0.4"/>
+                  <circle cx="8" cy="28" r="0.9" fill="#fff" opacity="0.6"/>
+                  <!-- table surface -->
+                  <rect x="0" y="95" width="90" height="45" fill="#2d1a0e"/>
+                  <rect x="0" y="93" width="90" height="4" fill="#3d2010"/>
+                  <!-- candle glow bloom -->
+                  <ellipse cx="45" cy="82" rx="35" ry="35" fill="url(#candleglow)"/>
+                  <!-- candle body -->
+                  <rect x="41" y="88" width="8" height="22" rx="2" fill="#fef3c7"/>
+                  <rect x="41" y="88" width="8" height="4" rx="1" fill="#fde68a"/>
+                  <!-- wick -->
+                  <line x1="45" y1="88" x2="45" y2="83" stroke="#92400e" stroke-width="1.2"/>
+                  <!-- flame -->
+                  <ellipse cx="45" cy="80" rx="3" ry="5" fill="#fbbf24" opacity="0.95"/>
+                  <ellipse cx="45" cy="79" rx="1.5" ry="3" fill="#fef08a"/>
+                  <ellipse cx="45" cy="80" rx="3" ry="5" fill="#f97316" opacity="0.4"/>
+                  <!-- reflection on table -->
+                  <ellipse cx="45" cy="115" rx="12" ry="4" fill="#f97316" opacity="0.12"/>
+                </svg>
+                <div class="ph-card-meta"><div class="ph-card-time">18:05</div><div class="ph-card-loc">📍 Rome</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="ph-date-grp">
+            <div class="ph-date-sep">
+              <div class="ph-date-l"></div>
+              <div class="ph-date-t">Yesterday — 14 Apr</div>
+              <div class="ph-date-l"></div>
+            </div>
+            <div class="ph-grid3">
+              <!-- Venice canal blue hour -->
+              <div class="ph-card">
+                <svg viewBox="0 0 90 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;">
+                  <defs>
+                    <linearGradient id="bluehour" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#0f172a"/>
+                      <stop offset="55%" stop-color="#1e3a5f"/>
+                      <stop offset="100%" stop-color="#1e40af"/>
+                    </linearGradient>
+                    <linearGradient id="canal" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#1e40af"/>
+                      <stop offset="100%" stop-color="#0f172a"/>
+                    </linearGradient>
+                  </defs>
+                  <rect width="90" height="140" fill="url(#bluehour)"/>
+                  <!-- moon -->
+                  <circle cx="68" cy="18" r="7" fill="#f8fafc" opacity="0.9"/>
+                  <circle cx="71" cy="16" r="6" fill="#1e3a5f"/>
+                  <!-- stars -->
+                  <circle cx="15" cy="12" r="0.9" fill="#fff" opacity="0.7"/>
+                  <circle cx="30" cy="8" r="0.7" fill="#fff" opacity="0.5"/>
+                  <circle cx="50" cy="14" r="0.8" fill="#fff" opacity="0.6"/>
+                  <circle cx="10" cy="25" r="0.6" fill="#fff" opacity="0.45"/>
+                  <!-- buildings -->
+                  <rect x="0" y="55" width="20" height="45" fill="#0f172a"/>
+                  <rect x="3" y="60" width="5" height="7" fill="#fef08a" opacity="0.5"/>
+                  <rect x="11" y="63" width="5" height="7" fill="#fef08a" opacity="0.3"/>
+                  <rect x="70" y="50" width="20" height="50" fill="#0f172a"/>
+                  <rect x="73" y="55" width="5" height="8" fill="#fef08a" opacity="0.4"/>
+                  <rect x="81" y="60" width="5" height="7" fill="#fef08a" opacity="0.35"/>
+                  <!-- arch bridge -->
+                  <path d="M 18 82 Q 45 68 72 82" stroke="#94a3b8" stroke-width="3" fill="none"/>
+                  <rect x="15" y="80" width="7" height="15" fill="#1e293b"/>
+                  <rect x="68" y="80" width="7" height="15" fill="#1e293b"/>
+                  <!-- canal water -->
+                  <rect x="0" y="90" width="90" height="50" fill="url(#canal)"/>
+                  <!-- reflections -->
+                  <line x1="45" y1="90" x2="38" y2="140" stroke="#3b82f6" stroke-width="1.5" opacity="0.3"/>
+                  <line x1="20" y1="90" x2="18" y2="140" stroke="#fef08a" stroke-width="1" opacity="0.2"/>
+                  <line x1="75" y1="90" x2="73" y2="140" stroke="#fef08a" stroke-width="1" opacity="0.15"/>
+                </svg>
+                <div class="ph-card-meta"><div class="ph-card-time">08:15</div><div class="ph-card-loc">📍 Florence</div></div>
+              </div>
+              <!-- Cherry blossom pink -->
+              <div class="ph-card">
+                <svg viewBox="0 0 90 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;">
+                  <defs>
+                    <linearGradient id="pinksky" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#fdf2f8"/>
+                      <stop offset="60%" stop-color="#fbcfe8"/>
+                      <stop offset="100%" stop-color="#f9a8d4"/>
+                    </linearGradient>
+                  </defs>
+                  <rect width="90" height="140" fill="url(#pinksky)"/>
+                  <!-- ground -->
+                  <rect x="0" y="110" width="90" height="30" fill="#d1fae5"/>
+                  <!-- fallen petals -->
+                  <ellipse cx="20" cy="113" rx="8" ry="2" fill="#fce7f3" opacity="0.6"/>
+                  <ellipse cx="60" cy="115" rx="10" ry="2" fill="#fce7f3" opacity="0.5"/>
+                  <!-- tree trunk -->
+                  <rect x="40" y="75" width="10" height="65" rx="3" fill="#78350f"/>
+                  <!-- branches -->
+                  <line x1="45" y1="85" x2="20" y2="55" stroke="#92400e" stroke-width="3"/>
+                  <line x1="45" y1="80" x2="70" y2="50" stroke="#92400e" stroke-width="3"/>
+                  <line x1="45" y1="90" x2="15" y2="75" stroke="#92400e" stroke-width="2"/>
+                  <line x1="45" y1="88" x2="72" y2="70" stroke="#92400e" stroke-width="2"/>
+                  <line x1="30" y1="62" x2="18" y2="45" stroke="#92400e" stroke-width="1.5"/>
+                  <line x1="62" y1="58" x2="74" y2="40" stroke="#92400e" stroke-width="1.5"/>
+                  <!-- blossom clusters -->
+                  <circle cx="18" cy="50" r="14" fill="#fce7f3" opacity="0.85"/>
+                  <circle cx="70" cy="46" r="12" fill="#fbcfe8" opacity="0.9"/>
+                  <circle cx="14" cy="70" r="10" fill="#fce7f3" opacity="0.8"/>
+                  <circle cx="73" cy="67" r="11" fill="#f9a8d4" opacity="0.85"/>
+                  <circle cx="35" cy="42" r="9" fill="#fce7f3" opacity="0.75"/>
+                  <circle cx="55" cy="38" r="10" fill="#fbcfe8" opacity="0.8"/>
+                  <!-- petals in air -->
+                  <ellipse cx="25" cy="30" rx="3" ry="1.5" fill="#fce7f3" opacity="0.7" transform="rotate(-20 25 30)"/>
+                  <ellipse cx="60" cy="25" rx="3" ry="1.5" fill="#f9a8d4" opacity="0.6" transform="rotate(15 60 25)"/>
+                  <ellipse cx="80" cy="40" rx="2.5" ry="1.2" fill="#fce7f3" opacity="0.65" transform="rotate(-30 80 40)"/>
+                </svg>
+                <div class="ph-card-meta"><div class="ph-card-time">15:44</div><div class="ph-card-loc">📍 Venice</div></div>
+              </div>
+              <!-- Starry night field -->
+              <div class="ph-card">
+                <svg viewBox="0 0 90 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;">
+                  <defs>
+                    <radialGradient id="milkyway" cx="40%" cy="30%" r="60%">
+                      <stop offset="0%" stop-color="#312e81" stop-opacity="0.8"/>
+                      <stop offset="100%" stop-color="#030712" stop-opacity="0"/>
+                    </radialGradient>
+                    <linearGradient id="nightfield" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#020617"/>
+                      <stop offset="100%" stop-color="#0f172a"/>
+                    </linearGradient>
+                  </defs>
+                  <rect width="90" height="140" fill="url(#nightfield)"/>
+                  <rect width="90" height="140" fill="url(#milkyway)"/>
+                  <!-- stars many -->
+                  <circle cx="8" cy="5" r="0.8" fill="#fff" opacity="0.9"/>
+                  <circle cx="18" cy="3" r="1" fill="#fff" opacity="0.8"/>
+                  <circle cx="28" cy="8" r="0.7" fill="#fff" opacity="0.7"/>
+                  <circle cx="40" cy="4" r="1.1" fill="#fff" opacity="0.9"/>
+                  <circle cx="52" cy="7" r="0.8" fill="#fff" opacity="0.75"/>
+                  <circle cx="62" cy="3" r="0.9" fill="#fff" opacity="0.85"/>
+                  <circle cx="72" cy="9" r="0.7" fill="#fff" opacity="0.7"/>
+                  <circle cx="82" cy="5" r="1" fill="#fff" opacity="0.8"/>
+                  <circle cx="12" cy="16" r="0.7" fill="#fff" opacity="0.6"/>
+                  <circle cx="35" cy="18" r="1.2" fill="#fff" opacity="0.9"/>
+                  <circle cx="55" cy="14" r="0.8" fill="#fff" opacity="0.7"/>
+                  <circle cx="75" cy="19" r="0.9" fill="#fff" opacity="0.8"/>
+                  <circle cx="22" cy="28" r="0.7" fill="#a5b4fc" opacity="0.7"/>
+                  <circle cx="48" cy="25" r="1" fill="#c7d2fe" opacity="0.6"/>
+                  <circle cx="68" cy="30" r="0.8" fill="#a5b4fc" opacity="0.65"/>
+                  <circle cx="85" cy="22" r="0.7" fill="#fff" opacity="0.6"/>
+                  <circle cx="5" cy="38" r="0.9" fill="#fff" opacity="0.7"/>
+                  <circle cx="32" cy="40" r="0.7" fill="#e0e7ff" opacity="0.6"/>
+                  <circle cx="58" cy="38" r="1" fill="#fff" opacity="0.75"/>
+                  <circle cx="78" cy="42" r="0.8" fill="#fff" opacity="0.65"/>
+                  <!-- milky way band -->
+                  <ellipse cx="35" cy="50" rx="25" ry="60" fill="#4338ca" opacity="0.06" transform="rotate(-30 35 50)"/>
+                  <!-- horizon silhouette (field + lone tree) -->
+                  <rect x="0" y="98" width="90" height="42" fill="#020617"/>
+                  <rect x="0" y="96" width="90" height="5" fill="#0f172a"/>
+                  <!-- wheat field texture -->
+                  <line x1="10" y1="96" x2="8" y2="108" stroke="#1e3a2f" stroke-width="1" opacity="0.4"/>
+                  <line x1="20" y1="96" x2="19" y2="110" stroke="#1e3a2f" stroke-width="1" opacity="0.4"/>
+                  <line x1="30" y1="96" x2="28" y2="107" stroke="#1e3a2f" stroke-width="1" opacity="0.4"/>
+                  <line x1="55" y1="96" x2="53" y2="109" stroke="#1e3a2f" stroke-width="1" opacity="0.4"/>
+                  <line x1="70" y1="96" x2="68" y2="108" stroke="#1e3a2f" stroke-width="1" opacity="0.4"/>
+                  <line x1="80" y1="96" x2="79" y2="110" stroke="#1e3a2f" stroke-width="1" opacity="0.4"/>
+                  <!-- lone tree -->
+                  <rect x="42" y="72" width="5" height="26" fill="#1e3a2f"/>
+                  <ellipse cx="44" cy="68" rx="11" ry="14" fill="#14532d" opacity="0.9"/>
+                  <!-- shooting star -->
+                  <line x1="60" y1="10" x2="75" y2="22" stroke="#fff" stroke-width="0.8" opacity="0.5"/>
+                </svg>
+                <div class="ph-card-meta"><div class="ph-card-time">20:30</div><div class="ph-card-loc">📍 Venice</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ph-bnav">
+          <div class="ph-nitem active"><span class="ph-nic">📸</span><span>Statuses</span></div>
+          <div class="ph-nitem"><span class="ph-nic">👤</span><span>Profile</span></div>
+          <div class="ph-nitem"><span style="font-size:13px;line-height:1.9">✦</span><span>Memory</span></div>
+          <div class="ph-nitem"><span class="ph-nic">⭐</span><span>Pro</span></div>
         </div>
       </div>
-      <p class="notif-tagline">The first time you receive this notification, you'll understand why we built StatusVault.</p>
     </div>
   </div>
 </section>
 
-<!-- ══ PLANS ══ -->
-<section class="plans">
-  <div class="plans-inner">
-    <span class="section-label reveal">Pricing</span>
-    <h2 class="section-title reveal">Free forever.<br>Pro for the full archive.</h2>
-    <p class="section-sub reveal">Your archive is always visible — completely free. Pro unlocks downloads and sharing for your entire history.</p>
-    <div class="plans-grid">
-      <div class="plan-card reveal">
-        <div class="plan-name">Free</div>
-        <div class="plan-price">€0</div>
-        <div class="plan-alt">Always free · no credit card</div>
-        <ul class="plan-features">
-          <li><span class="feat-icon yes">✓</span>Full archive — view everything forever</li>
-          <li><span class="feat-icon yes">✓</span>Download & share last 30 days</li>
-          <li><span class="feat-icon yes">✓</span>Automatic background saving</li>
-          <li><span class="feat-icon no">—</span><span class="feat-text locked">Download older content</span></li>
-          <li><span class="feat-icon no">—</span><span class="feat-text locked">Unlimited Memory notifications</span></li>
-        </ul>
-      </div>
-      <div class="plan-card pro reveal">
-        <div class="plan-badge-pro">MOST POPULAR</div>
-        <div class="plan-name">Pro</div>
-        <div class="plan-price">€2.49 <span>/ month</span></div>
-        <div class="plan-alt">or €14.99/year · 7-day free trial</div>
-        <ul class="plan-features">
-          <li><span class="feat-icon yes">✓</span>Everything in Free</li>
-          <li><span class="feat-icon yes">✓</span>Download & share your entire history</li>
-          <li><span class="feat-icon yes">✓</span>Unlimited Memory notifications</li>
-          <li><span class="feat-icon yes">✓</span>GPS location map for your statuses</li>
-          <li><span class="feat-icon yes">✓</span>All future features included</li>
-        </ul>
-      </div>
-    </div>
+<!-- ══ STRIP ══ -->
+<div class="strip">
+  <div class="strip-item">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Data stays on your device
   </div>
-</section>
+  <div class="strip-div"></div>
+  <div class="strip-item">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    Works automatically, 24/7
+  </div>
+  <div class="strip-div"></div>
+  <div class="strip-item">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    Free forever
+  </div>
+  <div class="strip-div"></div>
+  <div class="strip-item">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/></svg>
+    Android · More platforms coming
+  </div>
+</div>
 
-<!-- ══ CTA ══ -->
-<section class="cta">
-  <div class="cta-inner">
-    <span class="section-label reveal">Join the waitlist</span>
-    <div class="counter reveal">
-      <span class="counter-num" id="counterNum">247</span>
-      <span>people already waiting</span>
+<!-- ══ WAITLIST ══ -->
+<section id="waitlist" class="waitlist">
+  <div class="live-badge reveal"><div class="live-dot"></div>Early access is open</div>
+  <h2 class="waitlist-title reveal">Your memories<br>don't <em>expire.</em></h2>
+  <p class="waitlist-sub reveal">Join the waitlist — be first to know when Revimo launches. Free forever for early members.</p>
+  <div class="wform-wrap reveal" id="waitlist-form-wrap">
+    <div class="wform">
+      <input type="email" id="waitlist-email" placeholder="Enter your email address" autocomplete="email"/>
+      <button onclick="submitEmail('waitlist')">Join the waitlist</button>
     </div>
-    <h2 class="reveal">Don't lose another <em>memory.</em></h2>
-    <p class="reveal">StatusVault launches on Android in September 2026. Join the waitlist and be the first to know — early access members get in before everyone else.</p>
-    <div class="form-wrap reveal" style="max-width:100%">
-      <div id="formContainer2">
-        <div class="form-row">
-          <input type="email" id="emailInput2" placeholder="your@email.com" autocomplete="email">
-          <button class="form-btn" onclick="handleSubmit2()">Get early access</button>
-        </div>
-      </div>
-      <div class="success-msg" id="successMsg2">
-        ✓ You're on the list. We'll reach out before launch.
-      </div>
-      <p class="form-note" style="margin-top:10px;">No spam. One email when the app is ready.</p>
-    </div>
+    <p class="wform-note">No spam &nbsp;·&nbsp; <span>Free forever for early members</span> &nbsp;·&nbsp; Unsubscribe anytime</p>
+  </div>
+  <div class="wform-ok" id="waitlist-ok">
+    <div class="wform-ok-ico">✦</div>
+    <h3>You're on the list.</h3>
+    <p>We'll send a personal note when Revimo launches.<br>Keep living your moments — we'll make sure they last.</p>
   </div>
 </section>
 
 <!-- ══ FOOTER ══ -->
 <footer>
-  <div class="footer-inner">
-    <div class="footer-logo">Status<span>Vault</span></div>
-    <div class="footer-links">
-      <a href="/cdn-cgi/l/email-protection#adc5c8c1c1c2edded9ccd9d8dedbccd8c1d983ccdddd"><span class="__cf_email__" data-cfemail="acc4c9c0c0c3ecdfd8cdd8d9dfdacdd9c0d882cddcdc">[email&#160;protected]</span></a>
-      <a href="#">Privacy Policy</a>
-    </div>
-    <p class="footer-note">© 2026 StatusVault · Android · Launching September 2026 · Your memories. Saved before they disappear.</p>
-  </div>
+  <a href="#" class="footer-brand">
+    <svg style="color:#b5613a" viewBox="160 150 700 280"><use href="#logo"/></svg>
+    <span><span style="color:#b5613a">Re</span>vimo</span>
+  </a>
+  <nav>
+    <a href="mailto:hello@revimo.app">hello@revimo.app</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms</a>
+  </nav>
+  <div class="footer-copy">© 2026 Revimo · revimo.app</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// Scroll reveal
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible'); obs.unobserve(e.target);} });
-}, {threshold:.1, rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60));
 
-// Counter animation
-function animateCounter(){
-  const el = document.getElementById('counterNum');
-  const target=247, start=180, dur=1500;
-  let t0=null;
-  function step(ts){
-    if(!t0)t0=ts;
-    const p=Math.min((ts-t0)/dur,1);
-    const e=1-Math.pow(1-p,3);
-    el.textContent=Math.round(start+(target-start)*e);
-    if(p<1)requestAnimationFrame(step);
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const siblings = [...(e.target.parentElement?.querySelectorAll('.reveal') || [])];
+      setTimeout(() => e.target.classList.add('visible'), siblings.indexOf(e.target) * 80);
+      obs.unobserve(e.target);
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Brevo via Netlify Function — stessa integrazione di Status Vault
+  async function subscribeToBrevo(email) {
+    const response = await fetch('/.netlify/functions/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email })
+    });
+    if (!response.ok && response.status !== 204) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.message || 'Error');
+    }
+    return true;
   }
-  requestAnimationFrame(step);
-}
-const cobs = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){animateCounter();cobs.unobserve(e.target);}});},{threshold:.5});
-const cel=document.querySelector('.counter'); if(cel)cobs.observe(cel);
 
-// Brevo integration via Netlify Function (API key sicura sul server)
-async function subscribeToBrevo(email) {
-  const response = await fetch('/.netlify/functions/subscribe', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: email })
+  async function submitEmail(src) {
+    const input = document.getElementById(src === 'hero' ? 'hero-email' : 'waitlist-email');
+    const email = (input.value || '').trim();
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      input.style.outline = '2px solid #b5613a';
+      input.focus();
+      setTimeout(() => input.style.outline = '', 1600);
+      return;
+    }
+
+    const btn = input.closest('div').querySelector('button');
+    const originalText = btn.textContent;
+    btn.textContent = '...';
+    btn.disabled = true;
+
+    try {
+      await subscribeToBrevo(email);
+      if (src === 'hero') {
+        document.getElementById('hero-form-wrap').style.display = 'none';
+        document.getElementById('hero-ok').classList.add('show');
+      } else {
+        document.getElementById('waitlist-form-wrap').style.display = 'none';
+        document.getElementById('waitlist-ok').classList.add('show');
+      }
+    } catch(e) {
+      btn.textContent = originalText;
+      btn.disabled = false;
+      alert('Something went wrong. Please try again.');
+    }
+  }
+
+  ['hero-email','waitlist-email'].forEach(id => {
+    document.getElementById(id)?.addEventListener('keydown', e => {
+      if (e.key === 'Enter') submitEmail(id.includes('hero') ? 'hero' : 'waitlist');
+    });
   });
-  if (!response.ok && response.status !== 204) {
-    const err = await response.json();
-    throw new Error(err.message || 'Errore');
-  }
-  return true;
-}
-
-// Forms
-async function handleSubmit(){
-  const v=document.getElementById('emailInput').value.trim();
-  if(!v||!v.includes('@')){document.getElementById('emailInput').focus();return;}
-  const btn = document.querySelector('#formContainer .form-btn');
-  btn.textContent = '...'; btn.disabled = true;
-  try {
-    await subscribeToBrevo(v);
-    document.getElementById('formContainer').style.display='none';
-    document.getElementById('successMsg').style.display='block';
-  } catch(e) {
-    btn.textContent = 'Join the waitlist'; btn.disabled = false;
-    alert('Something went wrong. Please try again.');
-  }
-}
-async function handleSubmit2(){
-  const v=document.getElementById('emailInput2').value.trim();
-  if(!v||!v.includes('@')){document.getElementById('emailInput2').focus();return;}
-  const btn = document.querySelector('#formContainer2 .form-btn');
-  btn.textContent = '...'; btn.disabled = true;
-  try {
-    await subscribeToBrevo(v);
-    document.getElementById('formContainer2').style.display='none';
-    document.getElementById('successMsg2').style.display='block';
-  } catch(e) {
-    btn.textContent = 'Get early access'; btn.disabled = false;
-    alert('Something went wrong. Please try again.');
-  }
-}
 </script>
 </body>
 </html>
