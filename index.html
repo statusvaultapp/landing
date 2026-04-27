@@ -3,34 +3,33 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Revimo — Your memories. Saved before they disappear.</title>
+  <title>Revimo — Never lose a memory again.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Cormorant:ital,wght@1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
   <style>
   :root {
-    --tc:    #b5613a;
-    --tc-dk: #8c4425;
-    --tc-lt: #d4886a;
-    --tc-xs: #f0ddd4;
-    --paper: #ede8de;
-    --soft:  #e4dcd0;
-    --hero:  #0e0b08;
-    --ink:   #1e1a15;
-    --ink2:  #4a3d32;
-    --ink3:  #8a7a6e;
+    --g:     #1fa855;
+    --g2:    #17913f;
+    --g3:    #0f6b2e;
+    --gl:    #4ade80;
+    --gs:    #e8f5ee;
+    --gm:    #c8e8d4;
+    --paper: #f0ede8;
+    --soft:  #e4ddd4;
+    --hero:  #071a0e;
+    --ink:   #1c1a18;
+    --ink2:  #2e2b27;
+    --ink3:  #7a7168;
     --cream: #faf8f5;
     --warm:  #f4f1ec;
     --warm2: #ede8e0;
     --border:#e8e3dc;
     --stone: #9e9489;
     --stone2:#7a7168;
-    --tc-s:  #f5ebe4;
-    --tc-m:  #e8c9b5;
     --sh:    0 1px 3px #0000000a, 0 4px 16px #0000000a;
     --sh2:   0 2px 8px #00000012, 0 8px 32px #0000000e;
     --sh3:   0 4px 24px #00000018, 0 16px 48px #00000012;
-    --gold:  #c49a3c;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -44,24 +43,24 @@
     padding: 0 48px; transition: background 0.4s;
   }
   nav.scrolled {
-    background: rgba(237,232,222,0.96); backdrop-filter: blur(18px);
-    border-bottom: 1px solid rgba(181,97,58,0.1);
+    background: rgba(240,237,232,0.96); backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(31,168,85,0.12);
   }
   .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
-  .nav-logo svg { display: block; width: 34px; height: 19px; flex-shrink: 0; }
+  .nav-mascot { width: 34px; height: 34px; flex-shrink: 0; }
   .nav-logo-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.3rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.35rem; font-weight: 700; letter-spacing: 0.02em;
     white-space: nowrap; line-height: 1; color: #fff; transition: color 0.3s;
   }
-  .nav-logo-name .re { color: #b5613a; }
+  .nav-logo-name .revi { color: var(--gl); }
   nav.scrolled .nav-logo-name { color: var(--ink); }
-  nav.scrolled .nav-logo-name .re { color: #b5613a; }
+  nav.scrolled .nav-logo-name .revi { color: var(--g); }
   .nav-right { display: flex; align-items: center; gap: 28px; flex-shrink: 0; }
   .nav-link { font-size: 0.82rem; color: rgba(255,255,255,0.65); text-decoration: none; transition: color 0.2s; white-space: nowrap; letter-spacing: 0.02em; }
   .nav-link:hover { color: #fff; }
   nav.scrolled .nav-link { color: var(--ink2); }
-  nav.scrolled .nav-link:hover { color: var(--tc); }
+  nav.scrolled .nav-link:hover { color: var(--g); }
   .nav-btn {
     border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.08);
     color: #fff; padding: 8px 22px; border-radius: 100px;
@@ -70,8 +69,8 @@
     transition: background 0.2s, transform 0.15s; letter-spacing: 0.02em;
   }
   .nav-btn:hover { background: rgba(255,255,255,0.18); transform: translateY(-1px); }
-  nav.scrolled .nav-btn { background: var(--tc); border-color: var(--tc); color: #fff; }
-  nav.scrolled .nav-btn:hover { background: var(--tc-dk); }
+  nav.scrolled .nav-btn { background: var(--g); border-color: var(--g); color: #fff; }
+  nav.scrolled .nav-btn:hover { background: var(--g2); }
 
   /* ── HERO ── */
   .hero {
@@ -80,80 +79,74 @@
     text-align: center; padding: 80px 28px 60px;
     overflow: hidden; background: var(--hero);
   }
-
-  /* Layered warm film background */
   .h-bg {
     position: absolute; inset: 0; z-index: 0;
     background:
-      radial-gradient(ellipse 100% 50% at 50% 0%,   #2a1206 0%, transparent 55%),
-      radial-gradient(ellipse 60% 70% at 10% 90%,   #1a0c05 0%, transparent 50%),
-      radial-gradient(ellipse 50% 60% at 90% 80%,   #150905 0%, transparent 50%),
-      linear-gradient(170deg, #0c0806 0%, #140e09 45%, #0a0806 100%);
+      radial-gradient(ellipse 100% 50% at 50% 0%,   #072b10 0%, transparent 55%),
+      radial-gradient(ellipse 60% 70% at 10% 90%,   #041a0a 0%, transparent 50%),
+      radial-gradient(ellipse 50% 60% at 90% 80%,   #051407 0%, transparent 50%),
+      linear-gradient(170deg, #040c06 0%, #071a0e 45%, #030a05 100%);
   }
-  /* Film grain */
   .h-grain {
-    position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.22;
+    position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.18;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E");
     background-size: 160px 160px;
   }
-  /* Central warm glow */
   .h-bloom {
     position: absolute; z-index: 2; pointer-events: none;
     top: 10%; left: 50%; transform: translateX(-50%);
     width: 700px; height: 400px;
-    background: radial-gradient(ellipse, rgba(181,97,58,0.14) 0%, rgba(181,97,58,0.04) 45%, transparent 70%);
+    background: radial-gradient(ellipse, rgba(31,168,85,0.16) 0%, rgba(31,168,85,0.04) 45%, transparent 70%);
   }
-  /* Vignette edges */
   .h-vignette {
     position: absolute; inset: 0; z-index: 3; pointer-events: none;
-    background: radial-gradient(ellipse 85% 85% at 50% 50%, transparent 40%, rgba(6,4,2,0.7) 100%);
+    background: radial-gradient(ellipse 85% 85% at 50% 50%, transparent 40%, rgba(3,8,4,0.75) 100%);
   }
   .hero > * { position: relative; z-index: 10; }
 
-  /* Logo + name */
+  /* Hero brand */
   .hero-brand {
-    display: flex; flex-direction: column; align-items: center; gap: 20px;
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
     margin-bottom: 32px; animation: fadeUp 1s ease both;
   }
-  .hero-logo-mark {
-    width: 180px; height: 100px; display: block;
-    filter: drop-shadow(0 0 40px rgba(181,97,58,0.5)) drop-shadow(0 0 12px rgba(181,97,58,0.2));
+  .hero-mascot {
+    width: 130px; height: 130px;
+    filter: drop-shadow(0 0 40px rgba(31,168,85,0.5)) drop-shadow(0 0 12px rgba(31,168,85,0.2));
+    animation: float 4s ease-in-out infinite;
   }
-  .hero-wordmark {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3rem, 9vw, 7rem); font-weight: 300; letter-spacing: 0.5em;
-    text-transform: uppercase; line-height: 1; color: #fff;
-    text-shadow: 0 0 80px rgba(181,97,58,0.2);
-  }
-  .hero-wordmark .re { color: #b5613a; }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
-  /* Thin rule */
+  .hero-wordmark {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(2.8rem, 8vw, 6rem); font-weight: 700; letter-spacing: 0.06em;
+    line-height: 1; color: #fff;
+    text-shadow: 0 0 80px rgba(31,168,85,0.25);
+  }
+  .hero-wordmark .revi { color: var(--gl); }
+
   .hero-rule {
-    width: 1px; height: 48px; margin: 0 auto;
-    background: linear-gradient(180deg, transparent, rgba(181,97,58,0.5), transparent);
+    width: 1px; height: 40px; margin: 0 auto;
+    background: linear-gradient(180deg, transparent, rgba(31,168,85,0.5), transparent);
     animation: fadeUp 1s 0.1s ease both;
   }
 
-  /* Main headline */
   h1.hero-tagline {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.2rem, 6vw, 5rem); font-weight: 300; line-height: 1.15;
-    letter-spacing: 0.01em; font-style: italic;
-    color: #fff; max-width: 780px; margin: 28px auto 18px;
-    text-shadow: 0 2px 60px rgba(0,0,0,0.6);
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(2rem, 5.5vw, 4.2rem); font-weight: 600; line-height: 1.2;
+    letter-spacing: 0.01em;
+    color: #fff; max-width: 760px; margin: 24px auto 16px;
     animation: fadeUp 1s 0.15s ease both;
   }
-  h1.hero-tagline em { font-style: normal; color: var(--tc-lt); font-weight: 400; }
+  h1.hero-tagline em { font-style: normal; color: var(--gl); }
 
   p.hero-sub {
     font-family: 'DM Sans', sans-serif;
-    font-size: clamp(0.88rem, 1.6vw, 1rem); font-weight: 300; line-height: 1.8;
+    font-size: clamp(0.9rem, 1.6vw, 1.05rem); font-weight: 300; line-height: 1.8;
     color: rgba(255,255,255,0.48); max-width: 440px; margin: 0 auto 44px;
     letter-spacing: 0.02em;
     animation: fadeUp 1s 0.22s ease both;
   }
 
-  /* Email form */
   .hero-form-wrap { animation: fadeUp 1s 0.3s ease both; }
   .hero-form {
     display: flex; align-items: center;
@@ -162,7 +155,7 @@
     max-width: 440px; margin: 0 auto; backdrop-filter: blur(10px);
     transition: border-color 0.25s, background 0.25s;
   }
-  .hero-form:focus-within { border-color: rgba(181,97,58,0.55); background: rgba(255,255,255,0.09); }
+  .hero-form:focus-within { border-color: rgba(31,168,85,0.55); background: rgba(255,255,255,0.09); }
   .hero-form input {
     flex: 1; min-width: 0; border: none; outline: none; background: transparent;
     font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 300;
@@ -170,93 +163,84 @@
   }
   .hero-form input::placeholder { color: rgba(255,255,255,0.28); }
   .hero-form button {
-    flex-shrink: 0; background: var(--tc); color: #fff; border: none;
+    flex-shrink: 0; background: var(--g); color: #fff; border: none;
     padding: 12px 22px; border-radius: 100px;
     font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500;
     cursor: pointer; white-space: nowrap; letter-spacing: 0.03em;
     transition: background 0.2s, transform 0.15s;
-    box-shadow: 0 4px 20px rgba(181,97,58,0.4);
+    box-shadow: 0 4px 20px rgba(31,168,85,0.4);
   }
-  .hero-form button:hover { background: var(--tc-dk); transform: translateY(-1px); }
+  .hero-form button:hover { background: var(--g2); transform: translateY(-1px); }
   .hero-form-note { font-size: 0.68rem; color: rgba(255,255,255,0.22); margin-top: 12px; text-align: center; letter-spacing: 0.04em; }
-  .hero-form-note span { color: rgba(181,97,58,0.6); }
+  .hero-form-note span { color: rgba(74,222,128,0.6); }
   .hero-ok { display: none; flex-direction: column; align-items: center; gap: 8px; max-width: 440px; margin: 0 auto; }
   .hero-ok.show { display: flex; }
-  .hero-ok-star { font-size: 1.4rem; color: var(--tc-lt); }
-  .hero-ok strong { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-style: italic; font-weight: 400; color: #fff; }
+  .hero-ok-star { font-size: 1.4rem; color: var(--gl); }
+  .hero-ok strong { font-family: 'Fredoka', sans-serif; font-size: 1.3rem; font-weight: 600; color: #fff; }
   .hero-ok span { font-size: 0.78rem; color: rgba(255,255,255,0.4); }
 
-  /* Scroll cue */
   .scroll-cue {
     margin-top: 52px;
     display: flex; flex-direction: column; align-items: center; gap: 8px;
     color: rgba(255,255,255,0.18); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase;
     animation: fadeUp 1s 0.5s ease both;
   }
-  .scroll-cue-line { width: 1px; height: 32px; background: linear-gradient(180deg, rgba(181,97,58,0.4), transparent); animation: scrollDrop 2s ease-in-out infinite; }
+  .scroll-cue-line { width: 1px; height: 32px; background: linear-gradient(180deg, rgba(31,168,85,0.4), transparent); animation: scrollDrop 2s ease-in-out infinite; }
 
   /* ── EMOTIONAL QUOTE ── */
   .quote-section {
     background: var(--paper);
     padding: 80px 48px; text-align: center;
-    border-bottom: 1px solid rgba(181,97,58,0.1);
+    border-bottom: 1px solid rgba(31,168,85,0.1);
     position: relative; overflow: hidden;
-  }
-  .quote-section::before {
-    content: '\201C';
-    position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
-    font-family: 'Cormorant Garamond', serif; font-size: 18rem; font-weight: 300;
-    color: rgba(181,97,58,0.05); line-height: 1; pointer-events: none; z-index: 0;
   }
   .quote-section > * { position: relative; z-index: 1; }
   .quote-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.5rem, 3.5vw, 2.6rem); font-weight: 300; font-style: italic;
-    color: var(--ink2); line-height: 1.55; max-width: 760px; margin: 0 auto 24px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(1.4rem, 3vw, 2.4rem); font-weight: 500;
+    color: var(--ink2); line-height: 1.5; max-width: 760px; margin: 0 auto 24px;
   }
-  .quote-text strong { font-style: normal; font-weight: 500; color: var(--ink); }
+  .quote-text strong { color: var(--ink); }
   .quote-attr {
     font-size: 0.75rem; color: var(--ink3); letter-spacing: 0.14em; text-transform: uppercase;
     font-family: 'DM Sans', sans-serif; font-weight: 400;
   }
-  .quote-attr span { color: var(--tc); }
+  .quote-attr span { color: var(--g); }
 
   /* ── PROBLEM STRIP ── */
-  .problem {
-    background: var(--ink); padding: 60px 48px; text-align: center;
-  }
+  .problem { background: var(--ink); padding: 60px 48px; text-align: center; }
   .problem p {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.1rem, 2.4vw, 1.7rem); font-weight: 300; font-style: italic;
-    color: rgba(255,255,255,0.6); max-width: 680px; margin: 0 auto; line-height: 1.7;
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(1.1rem, 2.2vw, 1.65rem); font-weight: 400;
+    color: rgba(255,255,255,0.55); max-width: 680px; margin: 0 auto; line-height: 1.7;
   }
-  .problem p strong { font-style: normal; color: rgba(255,255,255,0.9); font-weight: 500; }
-  .problem p .highlight { color: var(--tc-lt); font-style: normal; }
+  .problem p strong { color: rgba(255,255,255,0.9); font-weight: 600; }
+  .problem p .highlight { color: var(--gl); }
 
   /* ── SHARED ── */
   .wrap { max-width: 1080px; margin: 0 auto; padding: 96px 48px; }
   .s-label {
     display: block; font-size: 0.65rem; font-weight: 500;
     letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--tc); margin-bottom: 16px;
+    color: var(--g); margin-bottom: 16px;
   }
   .s-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 400; line-height: 1.2;
-    letter-spacing: -0.01em; color: var(--ink); margin-bottom: 52px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.2;
+    letter-spacing: 0.01em; color: var(--ink); margin-bottom: 52px;
   }
-  .s-title em { font-style: italic; color: var(--tc); }
+  .s-title em { font-style: normal; color: var(--g); }
 
   /* ── HOW IT WORKS ── */
-  .how-grid { display: grid; grid-template-columns: repeat(3,1fr); border-radius: 20px; overflow: hidden; border: 1px solid rgba(181,97,58,0.12); }
-  .how-step { background: #fff; padding: 44px 36px; border-right: 1px solid rgba(181,97,58,0.1); transition: background 0.25s; }
+  .how-grid { display: grid; grid-template-columns: repeat(3,1fr); border-radius: 20px; overflow: hidden; border: 1px solid rgba(31,168,85,0.14); }
+  .how-step { background: #fff; padding: 44px 36px; border-right: 1px solid rgba(31,168,85,0.1); transition: background 0.25s; }
   .how-step:last-child { border-right: none; }
-  .how-step:hover { background: var(--soft); }
-  .how-num { font-family: 'Cormorant Garamond', serif; font-size: 4rem; font-weight: 300; font-style: italic; color: rgba(181,97,58,0.15); line-height: 1; margin-bottom: 16px; }
-  .how-step h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 500; color: var(--ink); margin-bottom: 10px; }
+  .how-step:hover { background: var(--gs); }
+  .how-num { font-family: 'Fredoka', sans-serif; font-size: 3.5rem; font-weight: 700; color: rgba(31,168,85,0.12); line-height: 1; margin-bottom: 16px; }
+  .how-step h3 { font-family: 'Fredoka', sans-serif; font-size: 1.3rem; font-weight: 600; color: var(--ink); margin-bottom: 10px; }
   .how-step p { font-size: 0.875rem; color: var(--ink2); line-height: 1.75; font-weight: 300; }
 
-  /* ── MEMORY MOMENT — full dark cinematic ── */
+  /* ── MEMORY SECTION ── */
   .memory-section {
     background: var(--ink); position: relative; overflow: hidden;
     padding: 120px 48px; text-align: center;
@@ -264,56 +248,54 @@
   .memory-section::before {
     content: '';
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(181,97,58,0.15) 0%, transparent 65%);
+    background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(31,168,85,0.12) 0%, transparent 65%);
     pointer-events: none;
   }
   .memory-grain {
-    position: absolute; inset: 0; pointer-events: none; opacity: 0.15;
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.12;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E");
     background-size: 160px 160px;
   }
   .memory-section > * { position: relative; z-index: 1; }
-  .memory-eyebrow { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--tc-lt); margin-bottom: 24px; display: block; font-family: 'DM Sans', sans-serif; }
+  .memory-eyebrow { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gl); margin-bottom: 24px; display: block; font-family: 'DM Sans', sans-serif; }
   .memory-headline {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 5vw, 4rem); font-weight: 300; font-style: italic;
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(1.8rem, 4.5vw, 3.6rem); font-weight: 600;
     color: #fff; line-height: 1.25; max-width: 700px; margin: 0 auto 16px;
   }
-  .memory-headline em { font-style: normal; color: var(--tc-lt); }
+  .memory-headline em { font-style: normal; color: var(--gl); }
   .memory-sub { font-size: 0.9rem; color: rgba(255,255,255,0.38); max-width: 340px; margin: 0 auto 56px; line-height: 1.75; font-weight: 300; }
-
-  /* Notification card */
   .notif-pill {
     display: inline-flex; align-items: center; gap: 16px;
     background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
     border-radius: 20px; padding: 20px 32px; backdrop-filter: blur(8px);
     text-align: left;
   }
-  .notif-dot { width: 36px; height: 36px; background: var(--tc); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem; }
-  .notif-app { font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--tc-lt); margin-bottom: 4px; font-family: 'DM Sans', sans-serif; }
-  .notif-msg { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.05rem; font-weight: 400; color: rgba(255,255,255,0.88); }
+  .notif-dot { width: 36px; height: 36px; background: var(--g); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem; }
+  .notif-app { font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gl); margin-bottom: 4px; font-family: 'DM Sans', sans-serif; }
+  .notif-msg { font-family: 'Fredoka', sans-serif; font-size: 1.05rem; font-weight: 500; color: rgba(255,255,255,0.88); }
 
   /* ── FEATURES ── */
   .feat-bg { background: var(--soft); }
   .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px,1fr)); gap: 16px; }
   .feat {
     background: #fff; border-radius: 20px; padding: 32px 28px;
-    border: 1px solid rgba(181,97,58,0.1);
+    border: 1px solid rgba(31,168,85,0.1);
     transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
   }
-  .feat:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(181,97,58,0.1); border-color: rgba(181,97,58,0.28); }
-  .feat-ico { width: 44px; height: 44px; border-radius: 12px; background: var(--tc-xs); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 18px; }
-  .feat h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 500; color: var(--ink); margin-bottom: 8px; }
+  .feat:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(31,168,85,0.1); border-color: rgba(31,168,85,0.28); }
+  .feat-ico { width: 44px; height: 44px; border-radius: 12px; background: var(--gs); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 18px; }
+  .feat h3 { font-family: 'Fredoka', sans-serif; font-size: 1.2rem; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
   .feat p { font-size: 0.86rem; color: var(--ink2); line-height: 1.75; font-weight: 300; }
 
   /* ── APP PREVIEW ── */
   .preview-section { background: var(--paper); padding: 96px 48px; }
   .preview-inner { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
 
-  /* Phone shell */
+  /* ── PHONE SHELL ── */
   .phone {
     width: 300px; background: #fff; border-radius: 40px;
-    border: 1px solid var(--border); height: 580px; display: flex; flex-direction: column;
+    border: 1px solid var(--border); height: 600px; display: flex; flex-direction: column;
     box-shadow: var(--sh3), 0 0 0 5px var(--warm);
     overflow: hidden; flex-shrink: 0;
   }
@@ -321,37 +303,52 @@
   .ph-notch { width: 100px; height: 24px; background: var(--cream); border-radius: 0 0 14px 14px; margin: 0 auto; display: flex; align-items: center; justify-content: center; }
   .ph-notch-cam { width: 7px; height: 7px; background: var(--warm2); border-radius: 50%; border: 1.5px solid var(--border); }
   .ph-sbar { display: flex; align-items: center; justify-content: space-between; padding: 4px 18px 0; font-size: 10.5px; font-weight: 600; color: var(--stone); flex-shrink: 0; }
-  .ph-app-hdr { display: flex; align-items: center; padding: 8px 14px 7px; gap: 9px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-  .ph-app-name { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: -0.3px; }
-  .ph-app-name .re { color: #b5613a; } .ph-app-name .vi { color: #1e1a15; }
+
+  /* App header with mascot */
+  .ph-app-hdr { display: flex; align-items: center; padding: 8px 14px 7px; gap: 8px; border-bottom: 1px solid var(--border); flex-shrink: 0; background: #fff; }
+  .ph-mascot-sm { width: 22px; height: 22px; flex-shrink: 0; }
+  .ph-app-name { font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.01em; }
+  .ph-app-name .revi { color: var(--g); }
+  .ph-app-name .mo { color: var(--ink); }
   .ph-hdr-r { margin-left: auto; display: flex; gap: 5px; }
   .ph-icon-btn { width: 28px; height: 28px; background: var(--warm); border: 1px solid var(--border); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+
+  /* Tabs */
   .ph-tabs { display: flex; border-bottom: 1px solid var(--border); background: #fff; flex-shrink: 0; }
-  .ph-tab { flex: 1; padding: 7px 0 6px; text-align: center; font-size: 9.5px; font-weight: 500; color: var(--stone); border-bottom: 2px solid transparent; }
-  .ph-tab.active { color: var(--tc); border-bottom-color: var(--tc); font-weight: 600; }
+  .ph-tab { flex: 1; padding: 7px 0 6px; text-align: center; font-size: 9.5px; font-weight: 500; color: var(--stone); border-bottom: 2px solid transparent; cursor: pointer; transition: color 0.2s; font-family: 'DM Sans', sans-serif; }
+  .ph-tab.active { color: var(--g); border-bottom-color: var(--g); font-weight: 600; }
+
+  /* Stats */
   .ph-stats { display: flex; gap: 6px; padding: 8px 12px; border-bottom: 1px solid var(--border); background: var(--warm); flex-shrink: 0; }
   .ph-stat { flex: 1; background: #fff; border: 1px solid var(--border); border-radius: 9px; padding: 7px 6px; text-align: center; }
-  .ph-stat-v { font-size: 15px; font-weight: 700; color: var(--tc); line-height: 1.1; }
-  .ph-stat-l { font-size: 8px; color: var(--stone2); margin-top: 2px; line-height: 1.3; }
-  .ph-chips { display: flex; gap: 5px; padding: 6px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-  .ph-chip { background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: 4px 10px; font-size: 9.5px; font-weight: 500; color: var(--stone2); white-space: nowrap; }
-  .ph-chip.active { background: var(--tc); border-color: var(--tc); color: #fff; }
+  .ph-stat-v { font-size: 15px; font-weight: 700; color: var(--g); line-height: 1.1; font-family: 'Fredoka', sans-serif; }
+  .ph-stat-l { font-size: 8px; color: var(--stone2); margin-top: 2px; line-height: 1.3; font-family: 'DM Sans', sans-serif; }
+
+  /* Chips */
+  .ph-chips { display: flex; gap: 5px; padding: 6px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; overflow-x: auto; scrollbar-width: none; }
+  .ph-chips::-webkit-scrollbar { display: none; }
+  .ph-chip { background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: 4px 10px; font-size: 9.5px; font-weight: 500; color: var(--stone2); white-space: nowrap; font-family: 'DM Sans', sans-serif; }
+  .ph-chip.active { background: var(--g); border-color: var(--g); color: #fff; }
+
+  /* Gallery */
   .ph-gallery { flex: 1; overflow-y: auto; padding: 9px 12px; scrollbar-width: none; background: var(--warm); min-height: 0; }
   .ph-gallery::-webkit-scrollbar { display: none; }
   .ph-date-grp { margin-bottom: 12px; }
   .ph-date-sep { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; }
   .ph-date-l { flex: 1; height: 1px; background: var(--border); }
-  .ph-date-t { font-size: 8.5px; font-weight: 600; color: var(--stone); background: var(--warm2); border: 1px solid var(--border); border-radius: 20px; padding: 2px 9px; white-space: nowrap; letter-spacing: .5px; text-transform: uppercase; }
+  .ph-date-t { font-size: 8.5px; font-weight: 600; color: var(--stone); background: var(--warm2); border: 1px solid var(--border); border-radius: 20px; padding: 2px 9px; white-space: nowrap; letter-spacing: .5px; text-transform: uppercase; font-family: 'DM Sans', sans-serif; }
   .ph-grid3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 4px; }
   .ph-card { position: relative; border-radius: 9px; overflow: hidden; background: var(--warm2); border: 1px solid var(--border); aspect-ratio: 9/14; }
-  .ph-card img, .ph-card svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ph-card svg { width: 100%; height: 100%; object-fit: cover; display: block; }
   .ph-card-meta { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, #000b); padding: 10px 5px 4px; }
-  .ph-card-time { font-size: 8px; color: #ffffffdd; font-weight: 500; }
-  .ph-card-loc { font-size: 7.5px; color: #ffc9a0; margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ph-card-time { font-size: 8px; color: #ffffffdd; font-weight: 500; font-family: 'DM Sans', sans-serif; }
+  .ph-card-loc { font-size: 7.5px; color: #a8f5c2; margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: 'DM Sans', sans-serif; }
+
+  /* Bottom nav */
   .ph-bnav { display: flex; border-top: 1px solid var(--border); background: #fff; flex-shrink: 0; }
-  .ph-nitem { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 0 9px; color: var(--stone); font-size: 8.5px; font-weight: 500; }
-  .ph-nitem.active { color: var(--tc); }
-  .ph-nic { font-size: 16px; }
+  .ph-nitem { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 0 9px; color: var(--stone); font-size: 8.5px; font-weight: 500; font-family: 'DM Sans', sans-serif; }
+  .ph-nitem.active { color: var(--g); }
+  .ph-nic { font-size: 15px; }
 
   /* ── INFO STRIP ── */
   .strip { background: var(--ink2); padding: 18px 48px; display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; }
@@ -363,39 +360,39 @@
   .waitlist::before {
     content: '';
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(181,97,58,0.05) 0%, transparent 70%);
+    background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(31,168,85,0.05) 0%, transparent 70%);
     pointer-events: none;
   }
   .waitlist > * { position: relative; z-index: 1; }
-  .live-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--soft); border: 1px solid rgba(181,97,58,0.18); padding: 6px 18px; border-radius: 100px; font-size: 0.7rem; color: var(--ink2); margin-bottom: 32px; letter-spacing: 0.04em; }
-  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--tc); animation: pulse 2s ease-in-out infinite; }
-  .waitlist-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 400; line-height: 1.15; color: var(--ink); max-width: 640px; margin: 0 auto 16px; }
-  .waitlist-title em { font-style: italic; color: var(--tc); }
+  .live-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--gs); border: 1px solid rgba(31,168,85,0.2); padding: 6px 18px; border-radius: 100px; font-size: 0.7rem; color: var(--ink2); margin-bottom: 32px; letter-spacing: 0.04em; font-family: 'DM Sans', sans-serif; }
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--g); animation: pulse 2s ease-in-out infinite; }
+  .waitlist-title { font-family: 'Fredoka', sans-serif; font-size: clamp(2rem, 5vw, 3.6rem); font-weight: 700; line-height: 1.15; color: var(--ink); max-width: 640px; margin: 0 auto 16px; }
+  .waitlist-title em { font-style: normal; color: var(--g); }
   .waitlist-sub { font-size: 0.95rem; font-weight: 300; color: var(--ink2); max-width: 400px; margin: 0 auto 48px; line-height: 1.78; }
   .wform-wrap { max-width: 440px; margin: 0 auto; }
-  .wform { display: flex; align-items: center; background: #fff; border: 1.5px solid rgba(181,97,58,0.2); border-radius: 100px; padding: 7px 7px 7px 22px; box-shadow: 0 4px 32px rgba(181,97,58,0.1); transition: border-color 0.2s, box-shadow 0.2s; }
-  .wform:focus-within { border-color: rgba(181,97,58,0.5); box-shadow: 0 6px 40px rgba(181,97,58,0.16); }
+  .wform { display: flex; align-items: center; background: #fff; border: 1.5px solid rgba(31,168,85,0.22); border-radius: 100px; padding: 7px 7px 7px 22px; box-shadow: 0 4px 32px rgba(31,168,85,0.1); transition: border-color 0.2s, box-shadow 0.2s; }
+  .wform:focus-within { border-color: rgba(31,168,85,0.5); box-shadow: 0 6px 40px rgba(31,168,85,0.16); }
   .wform input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 300; color: var(--ink); }
   .wform input::placeholder { color: var(--ink3); }
-  .wform button { flex-shrink: 0; background: var(--tc); color: #fff; border: none; padding: 13px 24px; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: background 0.2s, transform 0.15s; }
-  .wform button:hover { background: var(--tc-dk); transform: translateY(-1px); }
+  .wform button { flex-shrink: 0; background: var(--g); color: #fff; border: none; padding: 13px 24px; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: background 0.2s, transform 0.15s; }
+  .wform button:hover { background: var(--g2); transform: translateY(-1px); }
   .wform-note { font-size: 0.7rem; color: var(--ink3); margin-top: 14px; letter-spacing: 0.02em; }
-  .wform-note span { color: var(--tc); }
-  .wform-ok { display: none; flex-direction: column; align-items: center; gap: 12px; background: var(--soft); border: 1px solid rgba(181,97,58,0.2); border-radius: 24px; padding: 32px; }
+  .wform-note span { color: var(--g); }
+  .wform-ok { display: none; flex-direction: column; align-items: center; gap: 12px; background: var(--gs); border: 1px solid rgba(31,168,85,0.2); border-radius: 24px; padding: 32px; }
   .wform-ok.show { display: flex; }
   .wform-ok-ico { font-size: 2rem; }
-  .wform-ok h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; font-style: italic; color: var(--ink); }
+  .wform-ok h3 { font-family: 'Fredoka', sans-serif; font-size: 1.5rem; font-weight: 600; color: var(--ink); }
   .wform-ok p { font-size: 0.85rem; color: var(--ink2); text-align: center; line-height: 1.7; font-weight: 300; }
 
   /* ── FOOTER ── */
-  footer { border-top: 1px solid rgba(181,97,58,0.1); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-  .footer-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-  .footer-brand svg { display: block; width: 28px; height: 16px; flex-shrink: 0; }
-  .footer-brand span { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
-  .footer-brand span .re { color: var(--tc); }
+  footer { border-top: 1px solid rgba(31,168,85,0.1); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .footer-brand { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+  .footer-brand img { width: 26px; height: 26px; flex-shrink: 0; }
+  .footer-brand span { font-family: 'Fredoka', sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.02em; color: var(--ink); }
+  .footer-brand span .revi { color: var(--g); }
   .footer-links { display: flex; align-items: center; }
   .footer-links a { font-size: 0.74rem; color: var(--ink3); text-decoration: none; margin-left: 22px; transition: color 0.2s; }
-  .footer-links a:hover { color: var(--tc); }
+  .footer-links a:hover { color: var(--g); }
   .footer-copy { font-size: 0.7rem; color: var(--ink3); }
 
   /* ── ANIMATIONS ── */
@@ -409,7 +406,7 @@
   @media (max-width: 860px) {
     nav { padding: 0 20px; } .nav-link { display: none; }
     .how-grid { grid-template-columns: 1fr; border-radius: 16px; }
-    .how-step { border-right: none; border-bottom: 1px solid rgba(181,97,58,0.1); }
+    .how-step { border-right: none; border-bottom: 1px solid rgba(31,168,85,0.1); }
     .how-step:last-child { border-bottom: none; }
     .preview-section { padding: 68px 24px; }
     .preview-inner { grid-template-columns: 1fr; gap: 44px; }
@@ -427,15 +424,51 @@
 </head>
 <body>
 
+<!-- Revi SVG inline (reusable) -->
+<svg style="display:none" id="revi-def">
+  <symbol id="revi-svg" viewBox="0 0 200 230">
+    <!-- Base / stand -->
+    <ellipse cx="100" cy="210" rx="42" ry="10" fill="#17913f"/>
+    <!-- Body -->
+    <ellipse cx="100" cy="118" rx="80" ry="88" fill="#1fa855"/>
+    <!-- Highlight on body -->
+    <ellipse cx="78" cy="82" rx="28" ry="22" fill="#4ade80" opacity="0.18"/>
+    <!-- Ears / side bumps -->
+    <ellipse cx="24" cy="122" rx="14" ry="10" fill="#17913f"/>
+    <ellipse cx="176" cy="122" rx="14" ry="10" fill="#17913f"/>
+    <!-- Eye whites -->
+    <ellipse cx="76" cy="108" rx="22" ry="22" fill="#f0f0f0"/>
+    <ellipse cx="124" cy="108" rx="22" ry="22" fill="#f0f0f0"/>
+    <!-- Eye glaze -->
+    <ellipse cx="76" cy="108" rx="20" ry="20" fill="white" opacity="0.7"/>
+    <ellipse cx="124" cy="108" rx="20" ry="20" fill="white" opacity="0.7"/>
+    <!-- Irises -->
+    <circle cx="78" cy="110" r="13" fill="#6b3a1f"/>
+    <circle cx="126" cy="110" r="13" fill="#6b3a1f"/>
+    <!-- Pupils -->
+    <circle cx="80" cy="112" r="7" fill="#2a1008"/>
+    <circle cx="128" cy="112" r="7" fill="#2a1008"/>
+    <!-- Eye shine -->
+    <circle cx="85" cy="106" r="4" fill="white" opacity="0.85"/>
+    <circle cx="133" cy="106" r="4" fill="white" opacity="0.85"/>
+    <circle cx="83" cy="117" r="1.5" fill="white" opacity="0.5"/>
+    <circle cx="131" cy="117" r="1.5" fill="white" opacity="0.5"/>
+    <!-- Smile -->
+    <path d="M 82 136 Q 100 148 118 136" stroke="#5a2a0e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <!-- Antenna base -->
+    <circle cx="100" cy="32" r="10" fill="#17913f"/>
+    <!-- Antenna wire -->
+    <line x1="100" y1="32" x2="100" y2="4" stroke="#0f6b2e" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Antenna tip -->
+    <circle cx="100" cy="3" r="2.5" fill="#4ade80"/>
+  </symbol>
+</svg>
+
 <!-- ══ NAV ══ -->
 <nav id="nav">
   <a href="#" class="nav-logo">
-    <svg viewBox="160 150 700 280" xmlns="http://www.w3.org/2000/svg" fill="#b5613a">
-      <path d="M622.158936,381.930023 C625.083435,371.739014 625.287292,361.537598 625.586731,351.449890 C626.536194,319.463013 625.612305,287.517792 621.703613,255.714676 C619.526855,238.003632 615.693604,220.898895 603.411682,206.958237 C584.525635,185.521500 559.433350,178.524582 532.429077,187.917053 C499.243561,199.459442 479.764923,223.745056 471.392975,257.040436 C464.170563,285.764130 462.328522,315.170746 463.093842,344.751129 C463.516296,361.080444 464.845428,377.304199 467.878937,393.368805 C468.002350,394.022400 468.142670,394.681458 468.172760,395.342621 C468.349274,399.219788 467.323517,402.540527 462.939911,403.086273 C458.623718,403.623566 456.372894,400.758362 455.837158,396.959625 C454.373962,386.584686 452.908844,376.192230 452.016846,365.757782 C449.267548,333.596161 450.592346,301.567596 455.752960,269.692657 C461.511932,234.122086 476.986450,204.491806 508.724152,185.507523 C532.275391,171.420105 557.496826,166.946808 583.904419,176.860977 C608.784119,186.201508 623.182068,205.003555 630.280396,230.054581 C634.761780,245.869797 635.832947,262.173401 637.109863,278.408691 C638.964783,301.992828 639.537659,325.638885 639.015442,349.300507 C638.765503,360.622803 638.714050,371.955170 638.163879,383.263123 C637.807373,390.591003 636.393616,397.628448 628.009033,400.486633 C623.795044,401.923126 619.787598,401.345245 615.809509,399.882996 C602.764954,395.087952 590.962463,387.813751 578.879211,381.130096 C550.896484,365.651978 522.959290,350.096130 493.882751,336.714386 C492.673035,336.157623 491.474518,335.568390 490.309692,334.923859 C487.354889,333.288940 483.932526,331.764343 486.056274,327.398987 C487.599518,324.226898 491.827637,323.392120 495.643433,325.268127 C525.229248,339.813934 554.757202,354.478882 584.420532,368.864655 C594.600891,373.801880 605.112488,378.056854 615.480225,382.606445 C617.674255,383.569214 619.895142,384.355774 622.158936,381.930023 z"/>
-      <path d="M401.277100,359.901031 C401.928650,370.342346 402.614685,380.300995 403.190918,390.265961 C403.334045,392.740906 403.588684,395.265625 402.747986,397.701874 C401.623535,400.960480 399.694061,403.281342 395.932709,403.219452 C392.272430,403.159210 390.027985,401.057434 389.067871,397.718781 C388.476318,395.661713 388.156738,393.462860 388.117523,391.320282 C387.706024,368.842133 387.003967,346.360504 387.123657,323.883789 C387.253906,299.415009 388.349152,274.919189 391.891632,250.699524 C395.215973,227.971802 401.775482,206.291550 420.501068,190.816772 C442.961304,172.255676 468.342072,167.156250 496.340271,175.268204 C497.767761,175.681793 499.125458,176.367447 500.467804,177.024231 C500.856628,177.214493 501.078705,177.745621 501.861481,178.728531 C497.156281,181.480057 494.423401,187.056763 487.489685,185.538071 C453.812775,178.161713 421.502472,196.782852 410.448303,229.551483 C405.670288,243.715332 403.708252,258.377869 402.484589,273.113220 C400.679657,294.847534 399.503510,316.637207 400.278076,338.471832 C400.525909,345.457733 400.935455,352.437897 401.277100,359.901031 z"/>
-      <path d="M555.410156,224.685303 C565.436646,242.789764 569.854126,262.122314 572.366211,282.101349 C574.138855,296.199249 574.603638,310.303772 574.303467,324.467773 C574.161621,331.159607 571.819458,334.822510 567.919800,334.594055 C563.925781,334.360016 561.571655,330.747437 561.967346,324.110687 C563.408447,299.941833 560.463989,276.285461 554.099792,253.002838 C549.205444,235.097473 540.177246,219.612518 526.946289,206.531403 C525.444458,205.046539 521.406677,203.622467 524.679077,200.305695 C528.339905,196.595291 533.529419,195.961472 536.143250,198.788559 C543.400574,206.638199 549.900391,215.068222 555.410156,224.685303 z"/>
-    </svg>
-    <span class="nav-logo-name"><span class="re">Re</span>vimo</span>
+    <svg class="nav-mascot" viewBox="0 0 200 230"><use href="#revi-svg"/></svg>
+    <span class="nav-logo-name"><span class="revi">Revi</span>mo</span>
   </a>
   <div class="nav-right">
     <a href="#how-it-works" class="nav-link">How it works</a>
@@ -451,19 +484,15 @@
   <div class="h-vignette"></div>
 
   <div class="hero-brand">
-    <svg class="hero-logo-mark" width="180" height="100" viewBox="160 150 700 280" xmlns="http://www.w3.org/2000/svg" fill="#b5613a">
-      <path d="M622.158936,381.930023 C625.083435,371.739014 625.287292,361.537598 625.586731,351.449890 C626.536194,319.463013 625.612305,287.517792 621.703613,255.714676 C619.526855,238.003632 615.693604,220.898895 603.411682,206.958237 C584.525635,185.521500 559.433350,178.524582 532.429077,187.917053 C499.243561,199.459442 479.764923,223.745056 471.392975,257.040436 C464.170563,285.764130 462.328522,315.170746 463.093842,344.751129 C463.516296,361.080444 464.845428,377.304199 467.878937,393.368805 C468.002350,394.022400 468.142670,394.681458 468.172760,395.342621 C468.349274,399.219788 467.323517,402.540527 462.939911,403.086273 C458.623718,403.623566 456.372894,400.758362 455.837158,396.959625 C454.373962,386.584686 452.908844,376.192230 452.016846,365.757782 C449.267548,333.596161 450.592346,301.567596 455.752960,269.692657 C461.511932,234.122086 476.986450,204.491806 508.724152,185.507523 C532.275391,171.420105 557.496826,166.946808 583.904419,176.860977 C608.784119,186.201508 623.182068,205.003555 630.280396,230.054581 C634.761780,245.869797 635.832947,262.173401 637.109863,278.408691 C638.964783,301.992828 639.537659,325.638885 639.015442,349.300507 C638.765503,360.622803 638.714050,371.955170 638.163879,383.263123 C637.807373,390.591003 636.393616,397.628448 628.009033,400.486633 C623.795044,401.923126 619.787598,401.345245 615.809509,399.882996 C602.764954,395.087952 590.962463,387.813751 578.879211,381.130096 C550.896484,365.651978 522.959290,350.096130 493.882751,336.714386 C492.673035,336.157623 491.474518,335.568390 490.309692,334.923859 C487.354889,333.288940 483.932526,331.764343 486.056274,327.398987 C487.599518,324.226898 491.827637,323.392120 495.643433,325.268127 C525.229248,339.813934 554.757202,354.478882 584.420532,368.864655 C594.600891,373.801880 605.112488,378.056854 615.480225,382.606445 C617.674255,383.569214 619.895142,384.355774 622.158936,381.930023 z"/>
-      <path d="M401.277100,359.901031 C401.928650,370.342346 402.614685,380.300995 403.190918,390.265961 C403.334045,392.740906 403.588684,395.265625 402.747986,397.701874 C401.623535,400.960480 399.694061,403.281342 395.932709,403.219452 C392.272430,403.159210 390.027985,401.057434 389.067871,397.718781 C388.476318,395.661713 388.156738,393.462860 388.117523,391.320282 C387.706024,368.842133 387.003967,346.360504 387.123657,323.883789 C387.253906,299.415009 388.349152,274.919189 391.891632,250.699524 C395.215973,227.971802 401.775482,206.291550 420.501068,190.816772 C442.961304,172.255676 468.342072,167.156250 496.340271,175.268204 C497.767761,175.681793 499.125458,176.367447 500.467804,177.024231 C500.856628,177.214493 501.078705,177.745621 501.861481,178.728531 C497.156281,181.480057 494.423401,187.056763 487.489685,185.538071 C453.812775,178.161713 421.502472,196.782852 410.448303,229.551483 C405.670288,243.715332 403.708252,258.377869 402.484589,273.113220 C400.679657,294.847534 399.503510,316.637207 400.278076,338.471832 C400.525909,345.457733 400.935455,352.437897 401.277100,359.901031 z"/>
-      <path d="M555.410156,224.685303 C565.436646,242.789764 569.854126,262.122314 572.366211,282.101349 C574.138855,296.199249 574.603638,310.303772 574.303467,324.467773 C574.161621,331.159607 571.819458,334.822510 567.919800,334.594055 C563.925781,334.360016 561.571655,330.747437 561.967346,324.110687 C563.408447,299.941833 560.463989,276.285461 554.099792,253.002838 C549.205444,235.097473 540.177246,219.612518 526.946289,206.531403 C525.444458,205.046539 521.406677,203.622467 524.679077,200.305695 C528.339905,196.595291 533.529419,195.961472 536.143250,198.788559 C543.400574,206.638199 549.900391,215.068222 555.410156,224.685303 z"/>
-    </svg>
-    <div class="hero-wordmark"><span class="re">Re</span>vimo</div>
+    <svg class="hero-mascot" viewBox="0 0 200 230"><use href="#revi-svg"/></svg>
+    <div class="hero-wordmark"><span class="revi">Revi</span>mo</div>
   </div>
 
   <div class="hero-rule"></div>
 
   <h1 class="hero-tagline">
-    The moments you shared today<br>
-    will be <em>gone by tomorrow.</em>
+    Never lose a<br>
+    <em>memory again.</em>
   </h1>
 
   <p class="hero-sub">
@@ -582,7 +611,9 @@
   </h2>
   <p class="memory-sub">Start today. Your future self will be glad you did.</p>
   <div class="notif-pill">
-    <div class="notif-dot">✦</div>
+    <div class="notif-dot">
+      <svg width="20" height="20" viewBox="0 0 200 230"><use href="#revi-svg"/></svg>
+    </div>
     <div>
       <div class="notif-app">Revimo &nbsp;·&nbsp; now</div>
       <div class="notif-msg">One year ago today, you shared this moment.</div>
@@ -605,12 +636,8 @@
         <div class="ph-top"><div class="ph-notch"><div class="ph-notch-cam"></div></div></div>
         <div class="ph-sbar"><span>9:41</span><span>⚡ 87%</span></div>
         <div class="ph-app-hdr">
-          <svg width="22" height="12" viewBox="160 150 700 280" fill="#b5613a" style="flex-shrink:0;">
-            <path d="M622.158936,381.930023 C625.083435,371.739014 625.287292,361.537598 625.586731,351.449890 C626.536194,319.463013 625.612305,287.517792 621.703613,255.714676 C619.526855,238.003632 615.693604,220.898895 603.411682,206.958237 C584.525635,185.521500 559.433350,178.524582 532.429077,187.917053 C499.243561,199.459442 479.764923,223.745056 471.392975,257.040436 C464.170563,285.764130 462.328522,315.170746 463.093842,344.751129 C463.516296,361.080444 464.845428,377.304199 467.878937,393.368805 C468.349274,399.219788 467.323517,402.540527 462.939911,403.086273 C458.623718,403.623566 456.372894,400.758362 455.837158,396.959625 C454.373962,386.584686 452.908844,376.192230 452.016846,365.757782 C449.267548,333.596161 450.592346,301.567596 455.752960,269.692657 C461.511932,234.122086 476.986450,204.491806 508.724152,185.507523 C532.275391,171.420105 557.496826,166.946808 583.904419,176.860977 C608.784119,186.201508 623.182068,205.003555 630.280396,230.054581 C634.761780,245.869797 637.109863,278.408691 639.015442,349.300507 C638.163879,383.263123 628.009033,400.486633 615.809509,399.882996 C602.764954,395.087952 578.879211,381.130096 C550.896484,365.651978 493.882751,336.714386 C486.056274,327.398987 495.643433,325.268127 C584.420532,368.864655 622.158936,381.930023 z"/>
-            <path d="M401.277100,359.901031 C401.928650,370.342346 402.614685,380.300995 403.190918,390.265961 C402.747986,397.701874 C395.932709,403.219452 C389.067871,397.718781 C388.117523,391.320282 C387.123657,323.883789 C391.891632,250.699524 C420.501068,190.816772 C468.342072,167.156250 496.340271,175.268204 C501.861481,178.728531 C487.489685,185.538071 C410.448303,229.551483 C400.278076,338.471832 C401.277100,359.901031 z"/>
-            <path d="M555.410156,224.685303 C572.366211,282.101349 C574.303467,324.467773 C563.925781,334.360016 C554.099792,253.002838 C526.946289,206.531403 C536.143250,198.788559 C555.410156,224.685303 z"/>
-          </svg>
-          <div class="ph-app-name"><span class="re">Re</span><span class="vi">vimo</span></div>
+          <svg class="ph-mascot-sm" viewBox="0 0 200 230"><use href="#revi-svg"/></svg>
+          <div class="ph-app-name"><span class="revi">Revi</span><span class="mo">mo</span></div>
           <div class="ph-hdr-r"><div class="ph-icon-btn">🗺</div><div class="ph-icon-btn">⚙️</div></div>
         </div>
         <div class="ph-tabs">
@@ -637,21 +664,21 @@
               <div class="ph-card">
                 <svg viewBox="0 0 90 140" xmlns="http://www.w3.org/2000/svg">
                   <defs><linearGradient id="s1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a0a2e"/><stop offset="45%" stop-color="#7c2d12"/><stop offset="75%" stop-color="#ea580c"/><stop offset="100%" stop-color="#fbbf24"/></linearGradient><radialGradient id="sg1" cx="50%" cy="45%" r="20%"><stop offset="0%" stop-color="#fef08a"/><stop offset="100%" stop-color="#ea580c" stop-opacity="0"/></radialGradient></defs>
-                  <rect width="90" height="140" fill="url(#s1)"/><circle cx="45" cy="63" r="14" fill="url(#sg1)"/><rect x="0" y="80" width="90" height="60" fill="#7c2d12" opacity="0.7"/><line x1="30" y1="87" x2="60" y2="87" stroke="#fbbf24" stroke-width="1.5" opacity="0.5"/><line x1="20" y1="96" x2="70" y2="96" stroke="#fbbf24" stroke-width="1" opacity="0.3"/>
+                  <rect width="90" height="140" fill="url(#s1)"/><circle cx="45" cy="63" r="14" fill="url(#sg1)"/><rect x="0" y="80" width="90" height="60" fill="#7c2d12" opacity="0.7"/>
                 </svg>
                 <div class="ph-card-meta"><div class="ph-card-time">09:41</div><div class="ph-card-loc">📍 Milan</div></div>
               </div>
               <div class="ph-card">
                 <svg viewBox="0 0 90 140" xmlns="http://www.w3.org/2000/svg">
                   <defs><linearGradient id="s2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e0e7ff"/><stop offset="60%" stop-color="#bfdbfe"/><stop offset="100%" stop-color="#93c5fd"/></linearGradient></defs>
-                  <rect width="90" height="140" fill="url(#s2)"/><polygon points="0,85 25,40 50,85" fill="#94a3b8" opacity="0.5"/><polygon points="20,85 50,35 80,85" fill="#64748b" opacity="0.55"/><polygon points="50,85 75,45 90,85" fill="#475569" opacity="0.6"/><rect x="0" y="85" width="90" height="55" fill="#1e3a2f"/><polygon points="10,85 18,58 26,85" fill="#14532d"/><polygon points="28,85 37,50 46,85" fill="#166534"/><polygon points="50,85 58,55 66,85" fill="#14532d"/>
+                  <rect width="90" height="140" fill="url(#s2)"/><polygon points="0,85 25,40 50,85" fill="#94a3b8" opacity="0.5"/><polygon points="20,85 50,35 80,85" fill="#64748b" opacity="0.55"/><rect x="0" y="85" width="90" height="55" fill="#1e3a2f"/><polygon points="10,85 18,58 26,85" fill="#14532d"/><polygon points="28,85 37,50 46,85" fill="#166534"/>
                 </svg>
                 <div class="ph-card-meta"><div class="ph-card-time">13:20</div><div class="ph-card-loc">📍 Milan</div></div>
               </div>
               <div class="ph-card">
                 <svg viewBox="0 0 90 140" xmlns="http://www.w3.org/2000/svg">
                   <defs><radialGradient id="cg1" cx="50%" cy="60%" r="55%"><stop offset="0%" stop-color="#fef08a" stop-opacity="0.6"/><stop offset="100%" stop-color="#1c0a00" stop-opacity="0"/></radialGradient><linearGradient id="nb1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0f0a05"/><stop offset="100%" stop-color="#1c1209"/></linearGradient></defs>
-                  <rect width="90" height="140" fill="url(#nb1)"/><ellipse cx="45" cy="82" rx="35" ry="35" fill="url(#cg1)"/><rect x="0" y="95" width="90" height="45" fill="#2d1a0e"/><rect x="41" y="88" width="8" height="22" rx="2" fill="#fef3c7"/><ellipse cx="45" cy="80" rx="3" ry="5" fill="#fbbf24" opacity="0.95"/><ellipse cx="45" cy="79" rx="1.5" ry="3" fill="#fef08a"/>
+                  <rect width="90" height="140" fill="url(#nb1)"/><ellipse cx="45" cy="82" rx="35" ry="35" fill="url(#cg1)"/><rect x="0" y="95" width="90" height="45" fill="#2d1a0e"/><rect x="41" y="88" width="8" height="22" rx="2" fill="#fef3c7"/>
                 </svg>
                 <div class="ph-card-meta"><div class="ph-card-time">18:05</div><div class="ph-card-loc">📍 Rome</div></div>
               </div>
@@ -663,23 +690,21 @@
               <div class="ph-card">
                 <svg viewBox="0 0 90 140" xmlns="http://www.w3.org/2000/svg">
                   <defs><linearGradient id="bh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0f172a"/><stop offset="55%" stop-color="#1e3a5f"/><stop offset="100%" stop-color="#1e40af"/></linearGradient></defs>
-                  <rect width="90" height="140" fill="url(#bh)"/><circle cx="68" cy="18" r="7" fill="#f8fafc" opacity="0.9"/><circle cx="71" cy="16" r="6" fill="#1e3a5f"/><rect x="0" y="55" width="20" height="45" fill="#0f172a"/><rect x="70" y="50" width="20" height="50" fill="#0f172a"/><path d="M 18 82 Q 45 68 72 82" stroke="#94a3b8" stroke-width="3" fill="none"/><rect x="0" y="90" width="90" height="50" fill="#1e40af" opacity="0.4"/>
+                  <rect width="90" height="140" fill="url(#bh)"/><circle cx="68" cy="18" r="7" fill="#f8fafc" opacity="0.9"/><circle cx="71" cy="16" r="6" fill="#1e3a5f"/><rect x="0" y="55" width="20" height="45" fill="#0f172a"/><rect x="70" y="50" width="20" height="50" fill="#0f172a"/><path d="M 18 82 Q 45 68 72 82" stroke="#94a3b8" stroke-width="3" fill="none"/>
                 </svg>
                 <div class="ph-card-meta"><div class="ph-card-time">08:15</div><div class="ph-card-loc">📍 Florence</div></div>
               </div>
               <div class="ph-card">
                 <svg viewBox="0 0 90 140" xmlns="http://www.w3.org/2000/svg">
                   <defs><linearGradient id="pk" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fdf2f8"/><stop offset="70%" stop-color="#fbcfe8"/><stop offset="100%" stop-color="#f9a8d4"/></linearGradient></defs>
-                  <rect width="90" height="140" fill="url(#pk)"/><rect x="0" y="110" width="90" height="30" fill="#d1fae5"/><rect x="40" y="75" width="10" height="65" rx="3" fill="#78350f"/><line x1="45" y1="85" x2="20" y2="55" stroke="#92400e" stroke-width="3"/><line x1="45" y1="80" x2="70" y2="50" stroke="#92400e" stroke-width="3"/><circle cx="18" cy="50" r="14" fill="#fce7f3" opacity="0.9"/><circle cx="70" cy="46" r="12" fill="#fbcfe8" opacity="0.9"/><circle cx="14" cy="70" r="10" fill="#fce7f3" opacity="0.85"/>
+                  <rect width="90" height="140" fill="url(#pk)"/><rect x="0" y="110" width="90" height="30" fill="#d1fae5"/><rect x="40" y="75" width="10" height="65" rx="3" fill="#78350f"/><line x1="45" y1="85" x2="20" y2="55" stroke="#92400e" stroke-width="3"/><line x1="45" y1="80" x2="70" y2="50" stroke="#92400e" stroke-width="3"/><circle cx="18" cy="50" r="14" fill="#fce7f3" opacity="0.9"/>
                 </svg>
                 <div class="ph-card-meta"><div class="ph-card-time">15:44</div><div class="ph-card-loc">📍 Venice</div></div>
               </div>
               <div class="ph-card">
                 <svg viewBox="0 0 90 140" xmlns="http://www.w3.org/2000/svg">
                   <defs><radialGradient id="mw" cx="40%" cy="30%" r="60%"><stop offset="0%" stop-color="#312e81" stop-opacity="0.8"/><stop offset="100%" stop-color="#030712" stop-opacity="0"/></radialGradient></defs>
-                  <rect width="90" height="140" fill="#020617"/><rect width="90" height="140" fill="url(#mw)"/>
-                  <circle cx="8" cy="5" r="0.8" fill="#fff" opacity="0.9"/><circle cx="18" cy="3" r="1" fill="#fff" opacity="0.8"/><circle cx="35" cy="8" r="0.7" fill="#fff" opacity="0.7"/><circle cx="52" cy="5" r="1.1" fill="#fff" opacity="0.9"/><circle cx="70" cy="9" r="0.9" fill="#fff" opacity="0.8"/><circle cx="82" cy="4" r="0.8" fill="#fff" opacity="0.75"/><circle cx="22" cy="20" r="0.7" fill="#a5b4fc" opacity="0.7"/><circle cx="48" cy="18" r="1" fill="#c7d2fe" opacity="0.6"/>
-                  <rect x="0" y="98" width="90" height="42" fill="#020617"/><rect x="42" y="72" width="5" height="26" fill="#1e3a2f"/><ellipse cx="44" cy="68" rx="11" ry="14" fill="#14532d" opacity="0.9"/>
+                  <rect width="90" height="140" fill="#020617"/><rect width="90" height="140" fill="url(#mw)"/><circle cx="52" cy="5" r="1.1" fill="#fff" opacity="0.9"/><circle cx="18" cy="3" r="1" fill="#fff" opacity="0.8"/><rect x="42" y="72" width="5" height="26" fill="#1e3a2f"/><ellipse cx="44" cy="68" rx="11" ry="14" fill="#14532d" opacity="0.9"/>
                 </svg>
                 <div class="ph-card-meta"><div class="ph-card-time">20:30</div><div class="ph-card-loc">📍 Venice</div></div>
               </div>
@@ -744,12 +769,8 @@
 <!-- ══ FOOTER ══ -->
 <footer>
   <a href="#" class="footer-brand">
-    <svg width="28" height="16" viewBox="160 150 700 280" xmlns="http://www.w3.org/2000/svg" fill="#b5613a">
-      <path d="M622.158936,381.930023 C625.083435,371.739014 625.287292,361.537598 625.586731,351.449890 C626.536194,319.463013 625.612305,287.517792 621.703613,255.714676 C619.526855,238.003632 615.693604,220.898895 603.411682,206.958237 C584.525635,185.521500 559.433350,178.524582 532.429077,187.917053 C499.243561,199.459442 479.764923,223.745056 471.392975,257.040436 C464.170563,285.764130 462.328522,315.170746 463.093842,344.751129 C463.516296,361.080444 464.845428,377.304199 467.878937,393.368805 C468.349274,399.219788 467.323517,402.540527 462.939911,403.086273 C458.623718,403.623566 456.372894,400.758362 455.837158,396.959625 C454.373962,386.584686 452.908844,376.192230 452.016846,365.757782 C449.267548,333.596161 450.592346,301.567596 455.752960,269.692657 C461.511932,234.122086 476.986450,204.491806 508.724152,185.507523 C532.275391,171.420105 557.496826,166.946808 583.904419,176.860977 C608.784119,186.201508 623.182068,205.003555 630.280396,230.054581 C634.761780,245.869797 637.109863,278.408691 639.015442,349.300507 C638.163879,383.263123 628.009033,400.486633 615.809509,399.882996 C602.764954,395.087952 578.879211,381.130096 C550.896484,365.651978 493.882751,336.714386 C486.056274,327.398987 495.643433,325.268127 C584.420532,368.864655 622.158936,381.930023 z"/>
-      <path d="M401.277100,359.901031 C401.928650,370.342346 402.614685,380.300995 403.190918,390.265961 C402.747986,397.701874 C395.932709,403.219452 C389.067871,397.718781 C388.117523,391.320282 C387.123657,323.883789 C391.891632,250.699524 C420.501068,190.816772 C468.342072,167.156250 496.340271,175.268204 C501.861481,178.728531 C487.489685,185.538071 C410.448303,229.551483 C400.278076,338.471832 C401.277100,359.901031 z"/>
-      <path d="M555.410156,224.685303 C572.366211,282.101349 C574.303467,324.467773 C563.925781,334.360016 C554.099792,253.002838 C526.946289,206.531403 C536.143250,198.788559 C555.410156,224.685303 z"/>
-    </svg>
-    <span><span class="re">Re</span>vimo</span>
+    <svg width="26" height="30" viewBox="0 0 200 230"><use href="#revi-svg"/></svg>
+    <span><span class="revi">Revi</span>mo</span>
   </a>
   <div class="footer-links">
     <a href="mailto:hello@revimo.app">hello@revimo.app</a>
@@ -793,7 +814,7 @@
     const input = document.getElementById(src === 'hero' ? 'hero-email' : 'waitlist-email');
     const email = (input.value || '').trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      input.style.outline = '2px solid #b5613a'; input.focus();
+      input.style.outline = '2px solid #1fa855'; input.focus();
       setTimeout(() => input.style.outline = '', 1600); return;
     }
     const btn = input.closest('div').querySelector('button');
